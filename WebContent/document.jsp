@@ -125,6 +125,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <title>Document</title>
 <style>
             #doc_title {
@@ -181,9 +182,23 @@
                 vertical-align: top;
             }
         </style>
+
 </head>
 <body>
-<form action="saveDocument.do" method="post">
+<script>
+	jQuery(function ($) {
+	    //form submit handler
+	    $('#document').submit(function (e) {
+	        //check at leat 1 checkbox is checked
+	        if (!$('.team').is(':checked')) {
+	            //prevent the default form submit if it is not checked
+	            e.preventDefault();
+	            alert('팀을 선택하세요.');
+	        }
+	    })
+	})
+</script>
+<form action="saveDocument.do" id="document" method="post">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>
@@ -224,16 +239,17 @@
                     <td class="c">수신처</td>
                     	<td class="d">
                     
-
+						<div class="form-group options">
                         <%
-                        	int i = 0;
-                        	for (i = 0; i < teams.size() - 1; ++i) {
-                        		out.println(teams.get(i) + "<input type=\"checkbox\" name=\"teams\" value=\"" + teams.get(i) + "\">,");
+                        	if (teams.size() != 0) {
+	                        	int i = 0;
+	                        	for (i = 0; i < teams.size() - 1; ++i) {
+	                        		out.println("<label for=\"" + i + "\"><input type=\"checkbox\" name=\"teams\" class=\"team\" value=\"" + teams.get(i) + "\" id=\"" + i + "\">" +teams.get(i) + "</label>,");
+	                        	}
+                        		out.println("<label for=\"" + i + "\"><input type=\"checkbox\" name=\"teams\" class=\"team\" value=\"" + teams.get(i) + "\" id=\"" + i + "\">" +teams.get(i) + "</label>");
                         	}
-                        	out.println(teams.get(i) + "<input type=\"checkbox\" name=\"teams\" value=\"" + teams.get(i) + "\">");
                         %>
-                        
-                        
+                        </div>
                         </td>
                 </tr>
                 <tr class="c">
@@ -267,7 +283,7 @@
             <input type="hidden" name="startTime" value="<%=startTime %>">
             <input type ="hidden" name="approvalLine" value="<%=approvalLine %>">
 			<input type="submit" value="저장">
-			<a href="report.jsp?docNo=<%=documentNo %>"><button type="button">상신</button></a>
+			<button type="submit" formaction="report.jsp?docNo=<%=documentNo %>">상신</button>
 </form>
 </body>
 </html>

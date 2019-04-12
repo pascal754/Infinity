@@ -120,7 +120,7 @@
 </head>
 
 <body>
-<form action="CompleteReportByCEO.do" method="post">
+<form action="" method="post">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>
@@ -207,7 +207,6 @@
             <input type="hidden" name="doc_no" value="<%=docVo.getDocNo() %>">
             <input type="hidden" name="startTime" value="<%=docVo.getStartTime() %>">
             <input type="hidden" name="approvalLine" value="<%=approvalLine %>">
-            <input type="submit" value="결재">
 			
 </form>
 </body>

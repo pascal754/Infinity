@@ -239,4 +239,25 @@ public class EmpDAO {
 		}
 		return name;
 	}
+	
+	public String getTitle(int empNo) {
+		String title = "";
+		try {
+			pstmt = conn.prepareStatement(
+					"select title_name from title where title_code=(SELECT title_code FROM emp WHERE emp_no = ?)"
+					);
+			pstmt.setInt(1, empNo);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				title = rs.getString(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		return title;
+	}
 }

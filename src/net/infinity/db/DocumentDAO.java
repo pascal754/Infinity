@@ -478,4 +478,27 @@ public class DocumentDAO {
 		
 		return list;
 	}
+	
+	public void deleteDocument(String docNo) {
+		try {
+			pstmt = conn.prepareStatement(
+					"DELETE FROM document WHERE doc_no = ?"
+					);
+			pstmt.setString(1, docNo);
+			pstmt.executeUpdate();
+			
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+			
+			pstmt = conn.prepareStatement(
+					"DELETE FROM approval WHERE doc_no = ?"
+					);
+			pstmt.setString(1, docNo);
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+	}
 }

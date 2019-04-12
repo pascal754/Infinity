@@ -13,6 +13,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <title>Insert title here</title>
 <%
 	String name = (String)session.getAttribute("name");
@@ -115,7 +116,20 @@
 </head>
 
 <body>
-<form action="saveDocument.do" method="post">
+<script>
+	jQuery(function ($) {
+	    //form submit handler
+	    $('#document').submit(function (e) {
+	        //check at leat 1 checkbox is checked
+	        if (!$('.team').is(':checked')) {
+	            //prevent the default form submit if it is not checked
+	            e.preventDefault();
+	            alert('팀을 선택하세요.');
+	        }
+	    })
+	})
+</script>
+<form action="saveDocument.do" id="document" method="post">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>
@@ -158,15 +172,15 @@
                         <%
                         	int i = 0;
                         	for (i = 0; i < allTeams.size() - 1; ++i) {
-                        		out.print(allTeams.get(i) + "<input type=\"checkbox\" name=\"teams\" value=\"" + allTeams.get(i) + "\"");
+                        		out.print("<label for=\"" + i + "\"><input type=\"checkbox\" name=\"teams\" class=\"team\" id=\"" + i + "\" value=\"" + allTeams.get(i) + "\"");
                         		if (receivers.contains(allTeams.get(i)))
                         			out.println("checked=\"checked\"");
-                        		out.println(">");
+                        		out.println(">" + allTeams.get(i) + "</label>, ");
                         	}
-                        	out.print(allTeams.get(i) + "<input type=\"checkbox\" name=\"teams\" value=\"" + allTeams.get(i) + "\"");
+                        	out.print("<label for=\"" + i + "\"><input type=\"checkbox\" name=\"teams\" class=\"team\" id=\"" + i + "\" value=\"" + allTeams.get(i) + "\"");
                         	if (receivers.contains(allTeams.get(i)))
                     			out.println("checked=\"checked\"");
-                    		out.println(">");
+                    		out.println(">" + allTeams.get(i) + "</label>");
                         %>
                         </td>
                 </tr>
@@ -204,7 +218,9 @@
             <input type ="hidden" name="approvalLine" value="<%=approvalLine %>">
 			<input type="submit" value="저장">
 			<%System.out.println("draftDetail docNo: " + docNo); %>
-			<a href="report.jsp?docNo=<%=docNo %>"><button type="button">상신</button></a>	
+			<button type="submit" formaction="deleteDocument.jsp?docNo=<%=docNo %>">삭제</button>
+			<button type="submit" formaction="report.jsp?docNo=<%=docNo %>">상신</button>
+
 </form>
 </body>
 </html>
