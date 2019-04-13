@@ -28,6 +28,7 @@
 			<th>내용</th>
 			<th>작성자</th>
 			<th>완료일</th>
+		</tr>
 		<%
 			ApprovalDAO appDao = new ApprovalDAO();
 			EmpDAO empDao = new EmpDAO();

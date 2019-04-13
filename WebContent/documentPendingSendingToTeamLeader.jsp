@@ -26,14 +26,20 @@
 			<th>문서 번호</th>
 			<th>제목</th>
 			<th>내용</th>
+			<th>작성자</th>
 			<th>상신일</th>
+		</tr>
 		<%
 			ApprovalDAO appDao = new ApprovalDAO();
+			EmpDAO empDao = new EmpDAO();
 			for (DocumentVO x : list) {
 				out.println("<tr><td><a href=\"documentPendingSendingToTeamLeaderDetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
-					 + x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>" + appDao.getApprovedDate(x.getDocNo(), x.getEmpNo()) + "</td></tr>"
+					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>"
+					+ empDao.getEmpName(x.getEmpNo()) + "</td><td>"
+					+ appDao.getApprovedDate(x.getDocNo(), x.getEmpNo()) + "</td></tr>"
 				);
 			}
+			empDao.dbClose();
 			appDao.dbClose();
 		%>
 		

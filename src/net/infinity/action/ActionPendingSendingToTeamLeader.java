@@ -27,7 +27,7 @@ public class ActionPendingSendingToTeamLeader implements Action {
 		request.setAttribute("docList", list);
 		
 		ActionForward af = new ActionForward();
-		af.setPath("pendingSendingToTeamLeader.jsp");
+		af.setPath("documentPendingSendingToTeamLeader.jsp");
 		af.setRedirect(false);
 		
 		return af;

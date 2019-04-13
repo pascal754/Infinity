@@ -679,5 +679,25 @@ public class ApprovalDAO {
 		System.out.println("ApprovalDAO::getReceiverStatus" + rs.name + " " + rs.date + " " + rs.approval);
 		return rs;
 	}
+	
+	public void rejectDocumentByTeamLeader(String docNo, int teamLeaderNo, String comment) {
+		try {
+			pstmt = conn.prepareStatement(
+					"UPDATE approval SET approved=2, approved_time=NOW(), COMMENT = ? "
+					+ "WHERE approver = ? AND doc_no = ? AND type=1 AND approval_order=2"
+					);
+			pstmt.setString(1, comment);
+			pstmt.setInt(2, teamLeaderNo);
+			pstmt.setString(3, docNo);
+
+			pstmt.executeUpdate();
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+	}
 }
 

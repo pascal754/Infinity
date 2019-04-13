@@ -32,6 +32,7 @@
 			<th>발신일</th>
 			<th>담당자</th>
 			<th>접수일</th>
+		</tr>
 		<%
 			ApprovalDAO appDao = new ApprovalDAO();
 			EmpDAO empDao = new EmpDAO();

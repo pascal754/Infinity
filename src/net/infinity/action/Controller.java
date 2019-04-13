@@ -50,7 +50,7 @@ public class Controller extends HttpServlet {
     		af = new ActionForward();
     		af.setRedirect(false);
     		af.setPath("/main.jsp");
-    	} else if (command.equals("pendingSendingToTeamLeader.do")) {
+    	} else if (command.equals("documentPendingSendingToTeamLeader.do")) {
     		action = new ActionDocumentPendingSendingToTeamLeader();
     		af = action.execute(request, response);
      	} else if (command.equals("ReportToCEO.do")) {
@@ -104,61 +104,15 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("documentPendingSendingToCEO.do")) {
     		action = new ActionDocumentPendingSendingToCEO();
     		af = action.execute(request, response);
+     	} else if (command.equals("rejectDocumentByTeamLeader.do")) {
+    		action = new ActionRejectDocumentByTeamLeader();
+    		af = action.execute(request, response);
+     	} else if (command.equals("rejectDocumentByTeamleaderConfirmed.do")) {
+    		action = new ActionRejectDocumentByTeamLeaderConfirmed();
+    		af = action.execute(request, response);
      	}
     	
-//    	} else if ( command.equals("/BoardAddAction.bo")) {
-//    		action = new ;
-//    		af = action.execute(request, response);
-//    	} else if ( command.equals("/redirect.bo")) {
-//    		// redirect 방식
-//
-//    		//response.sendRedirect("redirect.jsp");
-//    		
-//        	//dispatcher 방식
-//        	/*
-//        	RequestDispatcher dispatcher = request.getRequestDispatcher(arg0);
-//        	request.setAttribute("id",  "abc");
-//        	dispatcher.forward(request,  response);
-//        	*/
-//    	} else if ( command.equals(".do")) {
-//    		action = new ();
-//    		//af = bAction.execute(request, response);
-//    		af = action.execute(request, response);
-//    	} else if (command.equals(".do")) {
-//    		//BoardDeleteAction bAction = new BoardDeleteAction();
-//    		action = new ();
-//    		//af = bAction.execute(request, response);
-//    		af = action.execute(request, response);
-//    		
-//    		
-//    	} else if (command.equals(".do")) {
-//    		af = new ActionForward();
-//    		af.setRedirect(false);
-//    		System.out.println("before board delete jsp");
-//    		af.setPath("/BoardDelete.jsp");
-//    	} else if (command.equals(".do")) {
-//    		af = new ActionForward();
-//    		af.setRedirect(false);
-//    		System.out.println("before board reply jsp");
-//    		af.setPath("/BoardReply.jsp");
-//    	} else if (command.equals("/BoardReplyAction.bo")) {
-//    		action = new BoardReplyAction();
-//    		af = action.execute(request, response);
-//    	} else if (command.equals("/BoardListSearch.bo")) {
-//    		action = new BoardSearchAction();
-//    		af = action.execute(request, response);
-//    	} else if (command.equals("/BoardModify1.bo")) {
-//    		af = new ActionForward();
-//    		af.setRedirect(false);
-//    		//System.out.println("before board modify jsp");
-//    		af.setPath("/BoardModify1.jsp");
-//    	} else if (command.equals("/BoardModifyAction2.bo")) {
-//    		action = new BoardModifyAction2();
-//    		af = action.execute(request, response);
-//    	} else if (command.equals("/BoardModifyAction3.bo")) {
-//    		action = new BoardModifyAction3();
-//    		af = action.execute(request, response);
-//    	}
+
     	
     	if (af != null) {
     		if (af.isRedirect()) {

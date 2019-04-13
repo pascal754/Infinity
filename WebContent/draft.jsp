@@ -25,6 +25,7 @@
 			<th>내용</th>
 			<th>작성자</th>
 			<th>저장시각</th>
+		</tr>
 		<%
 			EmpDAO empDao = new EmpDAO();
 			for (DocumentVO x : docVoList) {

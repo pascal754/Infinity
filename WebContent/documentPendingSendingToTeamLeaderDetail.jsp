@@ -204,6 +204,7 @@
             <input type="hidden" name="doc_no" value="<%=docVo.getDocNo() %>">
             <input type="hidden" name="startTime" value="<%=docVo.getStartTime() %>">
             <input type ="hidden" name="approvalLine" value="<%=approvalLine %>">
+            <button type="submit" formaction="rejectDocumentByTeamLeader.do?docNo=<%=docNo %>">반려</button>
 			<input type="submit" value="결재">
 </form>
 </body>

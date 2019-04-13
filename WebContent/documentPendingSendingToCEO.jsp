@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="net.infinity.db.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -25,14 +27,20 @@
 			<th>문서 번호</th>
 			<th>제목</th>
 			<th>내용</th>
+			<th>발신팀</th>
+			<th>작성자</th>
 			<th>상신일</th>
+		</tr>
 		<%
 			ApprovalDAO appDao = new ApprovalDAO();
 			EmpDAO empDao = new EmpDAO();
 			for (DocumentVO x : list) {
 				out.println("<tr><td><a href=\"documentPendingSendingToCEODetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
-					 + x.getTitle() + "</td><td>" + x.getContent() + "</td><td>" + appDao.getApprovedDate(x.getDocNo(), empDao.getTeamLeaderNoFromEmpNo(x.getEmpNo()))
-					 + "</td></tr>"
+					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>"
+					+ empDao.getTeamName(x.getEmpNo()) + "</td><td>"
+					+ empDao.getEmpName(x.getEmpNo()) + "</td><td>"
+					+ appDao.getApprovedDate(x.getDocNo(), empDao.getTeamLeaderNoFromEmpNo(x.getEmpNo()))
+					+ "</td></tr>"
 				);
 			}
 			empDao.dbClose();

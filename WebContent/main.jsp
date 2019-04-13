@@ -96,7 +96,7 @@ margin: 5px 0px 5px 0px;
 			<li class="list"><a href="documentPendingReceiving.do" target="content">수신대기</a></li>
 			<li class="list"><a href="documentBeingReceived.do" target="content">수신진행</a></li>
 			<li class="list"><a href="documentCompleteReceiving.do" target="content">수신완료</a></li>
-			<li class="list"><a href="pendingSendingToTeamLeader.do" target="content">발신대기</a></li>
+			<li class="list"><a href="documentPendingSendingToTeamLeader.do" target="content">발신대기</a></li>
 			<li class="list"><a href="documentPendingSendingToCEOByTeam.do" target="content">발신진행</a></li>
 			<li class="list"><a href="documentCompleteByTeamLeader.do" target="content">발신완료</a></li>
 			
