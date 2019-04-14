@@ -108,6 +108,7 @@ margin: 5px 0px 5px 0px;
 		<ul>
 			<li class="list"><a href="documentPendingSendingToCEO.do" target="content">대기문서</a></li>
 			<li class="list"><a href="documentCompleteByCEO.do" target="content">완료문서</a></li>
+			<li class="list"><a href="documentRejectedByCEO.do" target="content">반려함</a></li>
 		</ul>
 		</li>
 		
@@ -137,6 +138,11 @@ margin: 5px 0px 5px 0px;
 		<ul>
 			<li class="list"><a href="documentBeingSentByTeam.do" target="content">발신진행</a></li>
 			<li class="list"><a href="documentCompleteByTeamLeader.do" target="content">발신완료</a></li>
+		</ul>
+		</li>
+	<li><a><b>반려함</b></a>
+		<ul>
+			<li class="list"><a href="documentRejected.do" target="content">반려함</a></li>
 		</ul>
 		</li>
 		<%} %>

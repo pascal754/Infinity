@@ -18,7 +18,11 @@
 	//DocumentDAO docDao = new DocumentDAO();
 	//List<DocumentVO> list = docDao.getPendingSendingToTeamLeader(Integer.parseInt(id));
 	//docDao.dbClose();
-	List<DocumentVO> list = (List<DocumentVO>)request.getAttribute("docList");
+	List<RejectedDocumentVO> list = (List<RejectedDocumentVO>)request.getAttribute("docList");
+	session.setAttribute("docList", list);
+	//request.setAttribute("docList", list);
+	//request.getRequestDispatcher("documentRejectedDetail.jsp").forward(request, response);
+	System.out.println("documentRejected.jsp list.size(): " + list.size());
 %>
 
 	<table>
@@ -26,15 +30,24 @@
 			<th>문서 번호</th>
 			<th>제목</th>
 			<th>내용</th>
+			<th>작성자</th>
 			<th>상신일</th>
+			<th>반려일</th>
+		</tr>
 		<%
 			ApprovalDAO appDao = new ApprovalDAO();
-			for (DocumentVO x : list) {
-				out.println("<tr><td><a href=\"pendingSendingToTeamLeaderDetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
-					 + x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>" + appDao.getApprovedDate(x.getDocNo(), x.getEmpNo()) + "</td></tr>"
+			EmpDAO empDao = new EmpDAO();
+			for (RejectedDocumentVO x : list) {
+				out.println("<tr><td><a href=\"documentRejectedDetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
+					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>" + empDao.getEmpName(x.getEmpNo()) + "</td><td>"
+					+ appDao.getApprovedDate(x.getDocNo(), x.getEmpNo()) + "</td><td>"
+					+ x.getRejectedDate()
+					+ "</td></tr>"
 				);
 			}
+			empDao.dbClose();
 			appDao.dbClose();
+			
 		%>
 		
 	</table>

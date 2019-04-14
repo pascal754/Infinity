@@ -315,6 +315,29 @@ public class ApprovalDAO {
 				listByCEO.add(docVo);
 			}
 			
+			
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+			
+			pstmt = conn.prepareStatement(
+					"select * from document where doc_no in "
+					+ "(select doc_no from approval where doc_no in "
+					+ "(select doc_no from approval where approver = ? and approved = 1 and type=1) "
+					+ "and approval_order=3 and approved=2)");
+			pstmt.setInt(1, teamLeaderNo);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				DocumentVO docVo = new DocumentVO();
+				docVo.setDocNo(rs.getString("doc_no"));
+				docVo.setEmpNo(rs.getInt("emp_no"));
+				docVo.setTitle(rs.getString("title"));
+				docVo.setContent(rs.getString("content"));
+				docVo.setStartTime(rs.getTimestamp("start_time"));
+				docVo.setSaveTime(rs.getTimestamp("save_time"));
+				listByCEO.add(docVo);
+			}
+			
+			
 			for (DocumentVO x : listByCEO)
 				for (int i = 0; i < listByTeamLeader.size(); ++i)
 					if (listByTeamLeader.get(i).getDocNo().equals(x.getDocNo())) {
@@ -688,6 +711,27 @@ public class ApprovalDAO {
 					);
 			pstmt.setString(1, comment);
 			pstmt.setInt(2, teamLeaderNo);
+			pstmt.setString(3, docNo);
+
+			pstmt.executeUpdate();
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+	}
+	
+	
+	public void rejectDocumentByCEO(String docNo, int CEONo, String comment) {
+		try {
+			pstmt = conn.prepareStatement(
+					"UPDATE approval SET approved=2, approved_time=NOW(), COMMENT = ?" + 
+					" WHERE approver = ? AND doc_no = ? AND type=1 AND approval_order=3"
+					);
+			pstmt.setString(1, comment);
+			pstmt.setInt(2, CEONo);
 			pstmt.setString(3, docNo);
 
 			pstmt.executeUpdate();
