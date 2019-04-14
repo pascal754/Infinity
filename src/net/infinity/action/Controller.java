@@ -110,6 +110,9 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("rejectDocumentByTeamleaderConfirmed.do")) {
     		action = new ActionRejectDocumentByTeamLeaderConfirmed();
     		af = action.execute(request, response);
+     	} else if (command.equals("documentRejected.do")) {
+    		action = new ActionDocumentRejected();
+    		af = action.execute(request, response);
      	}
     	
 
