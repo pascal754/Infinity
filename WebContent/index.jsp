@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%
+	session.invalidate();
+%>
 	<h1>무한발전주식회사</h1>
 	<form action="loginProcess.do" method="post">
 		<fieldset>

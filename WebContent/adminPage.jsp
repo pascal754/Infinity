@@ -9,17 +9,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-
+<style>
+a { text-decoration:none; color:#000000;}
+</style>
 </head>
 	
 	
 <body>
 <h3>관리자 페이지</h3>
+<a href="logoutProcess.jsp"><h4>Logout</h4></a>
 <%
 	EmpDAO empDao = new EmpDAO();
-	String id = (String)session.getAttribute("id");
+	String name = (String)session.getAttribute("name");
 	List<EmpVO> empVoList = empDao.getAllMembers();
 	
+	if(!name.equals("momo")){
+		out.println("<script>alert('관리자 아님' ); location.href='index.jsp';</script>");
+	}
 %>
 	<form action=resetPassword.do method="post">
 	<table>
