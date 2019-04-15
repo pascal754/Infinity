@@ -743,13 +743,38 @@ public class ApprovalDAO {
 		}
 	}
 	
-	public void returnDocument(String docNo, int empNo) {
+	public void returnDocument(String docNo, int empNo, String comment) {
 		try {
 			pstmt = conn.prepareStatement(
-					"UPDATE approval SET approved=2, approval_date=now() WHERE doc_no = ? AND type=2 AND approver = ? AND approval_order=2"
+					"UPDATE approval SET approved=2, approved_time=now(), comment = ? WHERE doc_no = ? AND type=2 AND approver = ? AND approval_order=2"
 					);
-			pstmt.setString(1, docNo);
-			pstmt.setInt(2, empNo);
+			pstmt.setString(1,  comment);
+			pstmt.setString(2, docNo);
+			pstmt.setInt(3, empNo);
+
+			pstmt.executeUpdate();
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+	}
+	
+	public void returnDocumentByTeamLeader(String docNo, int teamLeaderNo) {
+		EmpDAO empDao = new EmpDAO();
+		int teamCode = empDao.getTeamCodeFromEmpNo(teamLeaderNo);
+		empDao.dbClose();
+		
+		try {
+			pstmt = conn.prepareStatement(
+					"INSERT INTO approval "
+					+ "(doc_no, TYPE, team_code, approver, approval_order, approved, approved_time) "
+					+ "VALUES (?, 2, ?, ?, 3, 2, NOW());"
+					);
+			pstmt.setString(1,  docNo);
+			pstmt.setInt(2, teamCode);
+			pstmt.setInt(3, teamLeaderNo);
 
 			pstmt.executeUpdate();
 
