@@ -127,7 +127,6 @@ public class Controller extends HttpServlet {
     		action = new ActionDocumentRejectedByCEO();
      	}
 
-
     	
     	if (af != null) {
     		if (af.isRedirect()) {
