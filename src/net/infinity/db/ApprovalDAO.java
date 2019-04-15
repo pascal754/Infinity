@@ -739,7 +739,23 @@ public class ApprovalDAO {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+	}
+	
+	public void returnDocument(String docNo, int empNo) {
+		try {
+			pstmt = conn.prepareStatement(
+					"UPDATE approval SET approved=2, approval_date=now() WHERE doc_no = ? AND type=2 AND approver = ? AND approval_order=2"
+					);
+			pstmt.setString(1, docNo);
+			pstmt.setInt(2, empNo);
+
+			pstmt.executeUpdate();
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
 		}
 	}

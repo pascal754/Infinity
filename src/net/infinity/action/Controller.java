@@ -122,6 +122,12 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("documentRejectedByCEO.do")) {
     		action = new ActionDocumentRejectedByCEO();
     		af = action.execute(request, response);
+     	} else if (command.equals("returnDocument.do")) {
+    		action = new ActionReturnDocument();
+    		af = action.execute(request, response);
+     	} else if (command.equals("documentReturnedPending.do")) {
+    		action = new ActionDocumentReturnedPending();
+    		af = action.execute(request, response);
      	}
     	
     	
