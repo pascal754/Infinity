@@ -247,33 +247,6 @@
             	System.out.println(Integer.parseInt(id));
             	if (receiverTeamLeaderNo == Integer.parseInt(id))
             		out.println("<input type=\"submit\" value=\"반송승인\">");
-                    <td class="e">반려사유</td>
-                </tr>
-                <tr class="c">
-                    <td class="e"><textarea name="content" id="content" required cols="80" rows="5" readonly><%=rejDocVo.getComment() %></textarea></td>
-                </tr>
-            </table>
-            <br>
-            <br>
-            <table>
-                <tr class="c">
-                    <td class="e">첨부</td>
-                </tr>
-                <tr class="c">
-                    <td class="e">&nbsp;</td>
-                </tr>
-            </table>
-            
-  
-            <input type="hidden" name="emp_no" value="<%=id %>">
-            <input type="hidden" name="doc_no" value="<%=docVo.getDocNo() %>">
-            <input type="hidden" name="startTime" value="<%=docVo.getStartTime() %>">
-            <input type="hidden" name="approvalLine" value="<%=approvalLine %>">
-            <%
-            	System.out.println(teamLeaderVo.getEmpNo());
-            	System.out.println(Integer.parseInt(id));
-            	if (receiverTeamLeaderNo() == Integer.parseInt(id))
-            		out.println("<input type=\"submit\" value=\"반려승인\">");
             %>
 </form>
 </body>
