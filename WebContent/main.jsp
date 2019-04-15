@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="net.infinity.db.*" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,7 +17,7 @@ a { text-decoration:none; color:#000000;}
 #nav_menu ul {
 list-style-type:none;
 padding-left:0px;
-text-align:right;
+text-align:center;
 }
 
 #nav_menu ul li {
@@ -28,21 +29,11 @@ margin: 5px 0px 5px 0px;
 
 #nav_menu ul li:first-child {border-left: none;}
 
-#sidebar {
-		
-			
-		float:left; width:180px; background-color:#DEDEDE; padding-left:-20px;}
+#sidebar {float:left; width:180px; background-color:#DEDEDE; padding-left:-20px;}
 
 #content {float:left; width:80%;}
 
 .on{text-decoration: underline; font-weight:bold;}
-
-
-header{
-	text-align:center;
-	font-size:25px;
-	
-}
 
 </style>
 
@@ -52,21 +43,25 @@ header{
 
 
 </head>
-
-<header>
-	<h1>Document Approval System</h1>
-</header>
 <body>
-	
+	<h1>Main Page</h1>
 <%
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
 	int title_code = (int)session.getAttribute("title_code");
+	EmpDAO empDao = new EmpDAO();
+	String teamName = empDao.getTeamName(Integer.parseInt(id));
+	String title = empDao.getTitle(Integer.parseInt(id));
+	empDao.dbClose();
 %>
 	Welcome
-	
+	&nbsp;
+	<%=teamName %>
+	&nbsp;	
 	<%=name %>
-	<%=title_code %>
+	&nbsp;
+	<%=title %>
+
 	<%
 	if (name.equals("momo")) {
 %>
@@ -101,13 +96,12 @@ header{
 			<li class="list"><a href="documentPendingReceiving.do" target="content">수신대기</a></li>
 			<li class="list"><a href="documentBeingReceived.do" target="content">수신진행</a></li>
 			<li class="list"><a href="documentCompleteReceiving.do" target="content">수신완료</a></li>
-			<li class="list"><a href="pendingSendingToTeamLeader.do" target="content">발신대기</a></li>
+			<li class="list"><a href="documentPendingSendingToTeamLeader.do" target="content">발신대기</a></li>
 			<li class="list"><a href="documentPendingSendingToCEOByTeam.do" target="content">발신진행</a></li>
 			<li class="list"><a href="documentCompleteByTeamLeader.do" target="content">발신완료</a></li>
 			<li class="list"><a href="documentRejected.do" target="content">반려함</a></li>
 			<li class="list"><a href="documentReturnedPending.do" target="content">반송대기</a></li>
 			<li class="list"><a href="" target="content">반송완료</a></li>
-
 			
 		</ul>
 		</li>
@@ -116,6 +110,7 @@ header{
 		<ul>
 			<li class="list"><a href="documentPendingSendingToCEO.do" target="content">대기문서</a></li>
 			<li class="list"><a href="documentCompleteByCEO.do" target="content">완료문서</a></li>
+			<li class="list"><a href="documentRejectedByCEO.do" target="content">반려함</a></li>
 		</ul>
 		</li>
 		
@@ -145,6 +140,17 @@ header{
 		<ul>
 			<li class="list"><a href="documentBeingSentByTeam.do" target="content">발신진행</a></li>
 			<li class="list"><a href="documentCompleteByTeamLeader.do" target="content">발신완료</a></li>
+		</ul>
+		</li>
+	<li><a><b>반려함</b></a>
+		<ul>
+			<li class="list"><a href="documentRejected.do" target="content">반려함</a></li>
+		</ul>
+		</li>
+	<li><a><b>반송함</b></a>
+		<ul>
+			<li class="list"><a href="documentReturnedPending.do" target="content">반송대기</a></li>
+			<li class="list"><a href="" target="content">반송완료</a></li>
 		</ul>
 		</li>
 		<%} %>
