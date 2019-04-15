@@ -9,6 +9,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+
 public class EmpDAO {
 	Connection conn = null;
 	PreparedStatement pstmt = null;
@@ -36,6 +37,8 @@ public class EmpDAO {
 				e.printStackTrace();
 			}
 	}
+	
+	
 	
 	public EmpVO getEmpVO(int empNo) {
 		EmpVO empVO = new EmpVO();
@@ -239,7 +242,57 @@ public class EmpDAO {
 		}
 		return name;
 	}
-	
+
+
+	public List<EmpVO> getAllMembers() {
+		List<EmpVO> list = new ArrayList<EmpVO>();
+		try {
+			pstmt = conn.prepareStatement("select * from emp");
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				EmpVO empVo = new EmpVO();
+				empVo.setEmpNo(rs.getInt("emp_no"));
+				empVo.setName(rs.getString("name"));
+				empVo.setTitleCode(rs.getInt("title_code"));
+				empVo.setPassword(rs.getString("password"));
+				empVo.setTel(rs.getInt("tel"));
+				list.add(empVo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		return list;
+	}
+
+
+	public int resetPassword(int empNo, String newpass) {
+		int result=0;
+		
+		SecurityUtil securityUtil = new SecurityUtil();
+		String ppwd = securityUtil.encryptSHA256(newpass);
+		
+		try {
+			pstmt = conn.prepareStatement("UPDATE emp SET password=? where emp_no=?");
+			
+			pstmt.setString(1, ppwd);
+			pstmt.setInt(2, empNo);
+			result = pstmt.executeUpdate();
+			System.out.println("reset");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		
+		return result;
+	}
+
 	public String getTitle(int empNo) {
 		String title = "";
 		try {
