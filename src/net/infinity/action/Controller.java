@@ -107,7 +107,8 @@ public class Controller extends HttpServlet {
 
      	} else if (command.equals("resetPassword.do")) {
     		action = new ResetPassword();
-
+    		af = action.execute(request, response);
+    		
      	} else if (command.equals("rejectDocumentByTeamLeader.do")) {
     		action = new ActionRejectDocumentByTeamLeader();
     		af = action.execute(request, response);

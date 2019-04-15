@@ -25,7 +25,7 @@ public class ResetPassword implements Action{
 		empDao.dbClose();
 		
 		ActionForward af = new ActionForward();
-		af.setPath("adminPage_test2.jsp");
+		af.setPath("adminPage.jsp");
 		af.setRedirect(false);
 		
 		return af;
