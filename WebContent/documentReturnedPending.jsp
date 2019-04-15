@@ -38,7 +38,7 @@
 			ApprovalDAO appDao = new ApprovalDAO();
 			EmpDAO empDao = new EmpDAO();
 			for (RejectedDocumentVO x : list) {
-				out.println("<tr><td><a href=\"documentReturnedDetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
+				out.println("<tr><td><a href=\"documentReturnedPendingDetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
 					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>" + empDao.getEmpName(x.getEmpNo()) + "</td><td>"
 					+ appDao.getApprovedDate(x.getDocNo(), x.getEmpNo()) + "</td><td>"
 					+ x.getRejectedDate()
