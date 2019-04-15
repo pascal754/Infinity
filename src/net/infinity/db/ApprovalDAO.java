@@ -751,7 +751,6 @@ public class ApprovalDAO {
 			pstmt.setString(1,  comment);
 			pstmt.setString(2, docNo);
 			pstmt.setInt(3, empNo);
-
 			pstmt.executeUpdate();
 
 		} catch(SQLException e) {
@@ -775,7 +774,6 @@ public class ApprovalDAO {
 			pstmt.setString(1,  docNo);
 			pstmt.setInt(2, teamCode);
 			pstmt.setInt(3, teamLeaderNo);
-
 			pstmt.executeUpdate();
 
 		} catch(SQLException e) {

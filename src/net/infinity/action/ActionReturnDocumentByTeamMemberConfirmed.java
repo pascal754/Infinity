@@ -19,7 +19,9 @@ public class ActionReturnDocumentByTeamMemberConfirmed implements Action {
 
 		String id = (String)mySession.getAttribute("id");
 		
+
 		request.setCharacterEncoding("UTF-8");
+
 		String docNo = request.getParameter("docNo");
 		String comment = request.getParameter("comment");
 		System.out.println("ActionReturnDocumentByTeamMemberConfirmed doc no: " + docNo);

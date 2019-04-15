@@ -134,12 +134,15 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("returnDocumentByTeamMemberConfirmed.do")) {
     		action = new ActionReturnDocumentByTeamMemberConfirmed();
     		af = action.execute(request, response);
+<<<<<<< HEAD
      	} else if (command.equals("returnDocumentConfirmedByTeamLeader.do")) {
     		action = new ActionReturnDocumentByTeamLeaderConfirmed();
     		af = action.execute(request, response);
      	} else if (command.equals("documentReturnedConfirmed.do")) {
     		action = new ActionDocumentReturnedConfirmed();
     		af = action.execute(request, response);
+=======
+>>>>>>> branch 'master' of https://github.com/pascal754/Infinity.git
      	}
 
     	

@@ -18,6 +18,7 @@
 		<input type="hidden" name="docNo" value="<%=docNo %>">
 		<input type="hidden" name="id" value="<%=id %>">
 		<input type="submit" value="반송">
+		<input type="submit" value="반려">
 		<button type="submit" formaction="documentPendingReceivingToTeamMember.do">취소</button>
 	</form>
 </body>
