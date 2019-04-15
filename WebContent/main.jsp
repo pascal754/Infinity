@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="net.infinity.db.*" %>
 
+
+<% session.setMaxInactiveInterval(-1);%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -62,14 +64,9 @@ margin: 5px 0px 5px 0px;
 	&nbsp;
 	<%=title %>
 
-	<%
-	if (name.equals("momo")) {
-%>
-		<br>관리자님 반갑습니다.<br>
-		<a href="memberList.jsp">회원 목록 보기</a>
-<%	
-	}
-%>
+	<%if (name.equals("momo")) {
+		response.sendRedirect("adminPage.jsp");
+	}%>
 
 <br><br>
 

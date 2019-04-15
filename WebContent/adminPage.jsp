@@ -14,6 +14,7 @@
 	
 	
 <body>
+<h3>관리자 페이지</h3>
 <%
 	EmpDAO empDao = new EmpDAO();
 	String id = (String)session.getAttribute("id");
