@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="refresh" content="2;url=http://localhost:8090/Infinity/index.jsp" />
+<meta http-equiv="refresh" content="1;url=/Infinity/index.jsp" />
 
 <title>Insert title here</title>
 </head>

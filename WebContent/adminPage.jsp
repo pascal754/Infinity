@@ -23,7 +23,7 @@ a { text-decoration:none; color:#000000;}
 	String name = (String)session.getAttribute("name");
 	List<EmpVO> empVoList = empDao.getAllMembers();
 	
-	if(!name.equals("momo")){
+	if(name == null || !name.equals("momo")){
 		out.println("<script>alert('관리자 아님' ); location.href='index.jsp';</script>");
 	}
 %>
