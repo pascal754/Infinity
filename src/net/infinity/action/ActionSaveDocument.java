@@ -36,7 +36,7 @@ public class ActionSaveDocument implements Action {
 		String uploadPath = request.getServletContext().getRealPath("/Upload");
 		try{
 
-			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8", new DefaultFileRenamePolicy()); 
+			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8"); 
 
 			 }catch (Exception e) {
 
@@ -111,6 +111,7 @@ public class ActionSaveDocument implements Action {
 				AttachDAO attachDAO = new AttachDAO();
 				List<String> getfilename = attachDAO.getFilename(docNo);
 				attachDAO.dbClose();
+				
 				if(!getfilename.contains(multi.getOriginalFileName("filename"))) {
 					pstmtatt = conn.prepareStatement(
 							"INSERT INTO attach (doc_no, filename, uploadpath) VALUES (?,?,?)"
