@@ -46,11 +46,7 @@ header{
 	
 }
 
-#wirteDoc {
-list-style-type:none;
-padding-left:0px;
-text-align:left;
-}
+
 
 
 </style>
