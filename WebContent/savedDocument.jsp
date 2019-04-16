@@ -202,7 +202,7 @@
                    	<td class="e">
                     <%for(String filenames : getfilename){
                 	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><br>");
-                  }%>
+                  } %>
                     </td>      
                 </tr>
             </table>

@@ -16,6 +16,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <title>Insert title here</title>
 <%
+	
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
 	
