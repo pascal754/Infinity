@@ -29,11 +29,27 @@ margin: 5px 0px 5px 0px;
 
 #nav_menu ul li:first-child {border-left: none;}
 
-#sidebar {float:left; width:180px; background-color:#DEDEDE; padding-left:-20px;}
+#sidebar {
+		
+			
+		float:left; width:180px; background-color:#DEDEDE; padding-left:-20px;}
 
 #content {float:left; width:80%;}
 
 .on{text-decoration: underline; font-weight:bold;}
+
+header{
+	text-align:center;
+	font-size:25px;
+	
+}
+
+#wirteDoc {
+list-style-type:none;
+padding-left:0px;
+text-align:left;
+}
+
 
 </style>
 
@@ -43,8 +59,13 @@ margin: 5px 0px 5px 0px;
 
 
 </head>
+
+<header>
+	<h1>Document Approval System</h1>
+</header>
+
 <body>
-	<h1>Main Page</h1>
+	
 <%
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
