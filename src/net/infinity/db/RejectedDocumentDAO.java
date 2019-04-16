@@ -252,4 +252,47 @@ public class RejectedDocumentDAO {
 		
 		return list;
 	}
+	
+	public List<RejectedDocumentVO> getDocumentReturnedReceived(int empNo) {
+		List<RejectedDocumentVO> list = new ArrayList<RejectedDocumentVO>();
+		
+		EmpDAO empDao = new EmpDAO();
+		int teamCode = empDao.getTeamCodeFromEmpNo(empNo);
+		empDao.dbClose();
+
+		try {
+			pstmt = conn.prepareStatement(
+					"SELECT * FROM document a, " + 
+					"(SELECT * FROM approval WHERE TYPE=2 and approval_order=2 AND approved=2 AND doc_no IN "
+					+ "(SELECT doc_no FROM approval WHERE TYPE=1 AND team_code = ? AND approval_order=2 AND approved=1 AND doc_no IN "
+					+ "(SELECT doc_no FROM approval WHERE TYPE=2 AND approval_order=3 AND approved=2))) b " 
+					+ "WHERE a.doc_no=b.doc_no"
+					);
+			pstmt.setInt(1, teamCode);
+			rs = pstmt.executeQuery();
+					
+			while (rs.next()) {
+				RejectedDocumentVO rejDocVo = new RejectedDocumentVO();
+				rejDocVo.setDocNo(rs.getString("doc_no"));
+				rejDocVo.setEmpNo(rs.getInt("emp_no"));
+				rejDocVo.setTitle(rs.getString("title"));
+				rejDocVo.setContent(rs.getString("content"));
+				rejDocVo.setStartTime(rs.getTimestamp("start_time"));
+				rejDocVo.setSaveTime(rs.getTimestamp("save_time"));
+				rejDocVo.setRejectedDate(rs.getDate("approved_time"));
+				rejDocVo.setComment(rs.getString("comment"));
+				rejDocVo.setApprovalOrder(rs.getInt("approval_order"));
+				rejDocVo.setApprover(rs.getInt("approver"));
+				
+				list.add(rejDocVo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		
+		return list;
+	}
 }

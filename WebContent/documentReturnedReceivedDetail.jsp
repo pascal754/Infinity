@@ -18,8 +18,25 @@
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
 	
+	
+	
 	String docNo = request.getParameter("docNo");
 
+	System.out.println("documentReturnedReceivedDetail.jsp");
+	System.out.println("doc no: " + docNo);
+	
+	
+	List<RejectedDocumentVO> list = (List<RejectedDocumentVO>)session.getAttribute("docList");
+	System.out.println("documentReturnedReceivedDetail.jsp list.size(): " + list.size());
+	RejectedDocumentVO rejDocVo = null;
+	for (RejectedDocumentVO x : list) {
+		if (x.getDocNo().equals(docNo)) {
+			rejDocVo = x;
+			break;
+		}
+	}
+	
+	
 	DocumentDAO docDao = new DocumentDAO();
 	DocumentVO docVo = docDao.getDraftDocument(docNo);
 	docDao.dbClose();
@@ -27,6 +44,7 @@
 	ApprovalDAO appDao = new ApprovalDAO();
 	
 	List<Integer> receiversCode = appDao.getReceiversCode(docNo);
+
 	
 	EmpDAO empDao = new EmpDAO();
 	EmpVO empVo = empDao.getEmpVO(docVo.getEmpNo());
@@ -38,8 +56,8 @@
 	
 	//List<String> allTeams = (List<String>)request.getAttribute("allTeams");
 	
-	
-	System.out.println("**pendingSendingToCEODetail.jsp**");
+	//sender information
+	System.out.println("**documentReturnedReceivedDetail.jsp**");
 	System.out.println("writer emp no: " + empVo.getEmpNo());
 	System.out.println("team leader no: " + empDao.getTeamLeaderNoFromEmpNo(empVo.getEmpNo()));
 	EmpVO teamLeaderVo = empDao.getEmpVO(empDao.getTeamLeaderNoFromEmpNo(empVo.getEmpNo()));
@@ -50,13 +68,11 @@
 	
 	Date approvedDateWriter = appDao.getApprovedDate(docNo, docVo.getEmpNo());
 	Date approvedDateTeamLeader = appDao.getApprovedDate(docNo, teamLeaderVo.getEmpNo());
+	Date approvedDateCEO = appDao.getApprovedDate(docNo, ceoVo.getEmpNo());
+
 	
-	Date approvedDateCEO = null;
-	
-	if (appLine == 3)
-		approvedDateCEO = appDao.getApprovedDate(docNo, ceoVo.getEmpNo());
-	
-	empDao.dbClose();	
+	int receiverTeamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(Integer.parseInt(id));
+	empDao.dbClose();
 	
 %>
 <style>
@@ -117,7 +133,7 @@
 </head>
 
 <body>
-<form action="CompleteReportByCEO.do" method="post">
+<form action="" method="post">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>
@@ -173,6 +189,9 @@
 								case APPROVED:
 									out.print("수신완료&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
+								case REJECTED_PENDING:
+									out.print("반송대기&nbsp" + rs.name + "&nbsp" + rs.date);
+									break;
 								case REJECTED:
 									out.print("반송&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
@@ -198,6 +217,16 @@
                 </tr>
                 <tr class="c">
                     <td class="f"><textarea name="content" id="content" required cols="80" rows="20" readonly><%=docVo.getContent() %></textarea></td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table>
+                <tr class="c">
+                    <td class="e">반송사유</td>
+                </tr>
+                <tr class="c">
+                    <td class="e"><textarea name="content" id="content" required cols="80" rows="5" readonly><%=rejDocVo.getComment() %></textarea></td>
                 </tr>
             </table>
             <br>

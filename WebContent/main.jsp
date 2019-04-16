@@ -31,11 +31,23 @@ margin: 5px 0px 5px 0px;
 
 #nav_menu ul li:first-child {border-left: none;}
 
-#sidebar {float:left; width:180px; background-color:#DEDEDE; padding-left:-20px;}
+#sidebar {
+		
+			
+		float:left; width:180px; background-color:#DEDEDE; padding-left:-20px;}
 
 #content {float:left; width:80%;}
 
 .on{text-decoration: underline; font-weight:bold;}
+
+header{
+	text-align:center;
+	font-size:25px;
+	
+}
+
+
+
 
 </style>
 
@@ -45,8 +57,13 @@ margin: 5px 0px 5px 0px;
 
 
 </head>
+
+<header>
+	<h1>Document Approval System</h1>
+</header>
+
 <body>
-	<h1>Main Page</h1>
+	
 <%
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
@@ -99,6 +116,7 @@ margin: 5px 0px 5px 0px;
 			<li class="list"><a href="documentRejected.do" target="content">반려함</a></li>
 			<li class="list"><a href="documentReturnedPending.do" target="content">반송대기</a></li>
 			<li class="list"><a href="documentReturnedConfirmed.do" target="content">반송완료</a></li>
+			<li class="list"><a href="documentReturnedReceived.do" target="content">반송수신</a></li>
 		</ul>
 		</li>
 	<%}else if(title_code==3){ %>
@@ -107,6 +125,7 @@ margin: 5px 0px 5px 0px;
 			<li class="list"><a href="documentPendingSendingToCEO.do" target="content">대기문서</a></li>
 			<li class="list"><a href="documentCompleteByCEO.do" target="content">완료문서</a></li>
 			<li class="list"><a href="documentRejectedByCEO.do" target="content">반려함</a></li>
+			<li class="list"><a href="" target="content">반송수신</a></li>
 		</ul>
 		</li>
 		
@@ -125,14 +144,14 @@ margin: 5px 0px 5px 0px;
 		</li>
 		<% }%>
 <%if(title_code==1){ %>
-	<li><a><b>팀 수신</b></a>
+	<li><a><b>팀 수신함</b></a>
 		<ul>
 			<li class="list"><a href="documentPendingReceiving.do" target="content">수신대기</a></li>
 			<li class="list"><a href="documentBeingReceived.do" target="content">수신진행</a></li>
 			<li class="list"><a href="documentCompleteReceiving.do" target="content">수신완료</a></li>
 		</ul>
 		</li>
-	<li><a><b>팀 발신</b></a>
+	<li><a><b>팀 발신함</b></a>
 		<ul>
 			<li class="list"><a href="documentBeingSentByTeam.do" target="content">발신진행</a></li>
 			<li class="list"><a href="documentCompleteByTeamLeader.do" target="content">발신완료</a></li>
@@ -147,6 +166,11 @@ margin: 5px 0px 5px 0px;
 		<ul>
 			<li class="list"><a href="documentReturnedPending.do" target="content">반송대기</a></li>
 			<li class="list"><a href="documentReturnedConfirmed.do" target="content">반송완료</a></li>
+		</ul>
+		</li>
+	<li><a><b>반송수신함</b></a>
+		<ul>
+			<li class="list"><a href="" target="content">반송수신</a></li>
 		</ul>
 		</li>
 		<%} %>

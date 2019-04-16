@@ -597,6 +597,30 @@ public class ApprovalDAO {
 		return status;
 	}
 	
+	public int getRejectionTeamLeaderStatus(String docNo, int teamCode) {
+		int status = 0;
+		try {
+			pstmt = conn.prepareStatement(
+					"SELECT approved from approval where doc_no = ? and approval_order=3 and type=2 and team_code = ?"
+					);
+			pstmt.setString(1, docNo);
+			pstmt.setInt(2, teamCode);
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				status = rs.getInt(1);
+			}
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		
+		return status;
+	}
+	
 	
 	public Date getAssignReviewerDate(String docNo, int teamCode) {
 		Date date = null;
@@ -654,7 +678,7 @@ public class ApprovalDAO {
 		
 		try {
 			pstmt = conn.prepareStatement(
-					"select approved_time from approval where doc_no = ? and approval_order=2 and approved=2 and type=2 and team_code = ?"
+					"SELECT approved_time FROM approval WHERE doc_no = ? AND type=2 AND approval_order=3 AND approved=2 and team_code = ?"
 					);
 			pstmt.setString(1, docNo);
 			pstmt.setInt(2, teamCode);
@@ -663,6 +687,23 @@ public class ApprovalDAO {
 			if (rs.next()) {
 				date = rs.getDate(1);
 			}
+			
+			if (date == null) {
+				if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+				if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+				
+				pstmt = conn.prepareStatement(
+						"select approved_time from approval where doc_no = ? and type=2 and approval_order=2 and approved=2 and team_code = ?"
+						);
+				pstmt.setString(1, docNo);
+				pstmt.setInt(2, teamCode);
+
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					date = rs.getDate(1);
+				}
+			}
+			
 
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -696,8 +737,9 @@ public class ApprovalDAO {
 			rs.date = getReviewDate(docNo, teamCode);
 			rs.approval = ApprovalStatus.APPROVED;
 		} else if (status == 2) {
-			rs.date = getRejectedDate(docNo, teamCode);;
-			rs.approval = ApprovalStatus.REJECTED;
+			rs.date = getRejectedDate(docNo, teamCode);
+			int teamLeaderStatus = getRejectionTeamLeaderStatus(docNo, teamCode);
+			rs.approval = (teamLeaderStatus == 0) ? ApprovalStatus.REJECTED_PENDING : ApprovalStatus.REJECTED;
 		}
 		System.out.println("ApprovalDAO::getReceiverStatus" + rs.name + " " + rs.date + " " + rs.approval);
 		return rs;
@@ -769,7 +811,7 @@ public class ApprovalDAO {
 			pstmt = conn.prepareStatement(
 					"INSERT INTO approval "
 					+ "(doc_no, TYPE, team_code, approver, approval_order, approved, approved_time) "
-					+ "VALUES (?, 2, ?, ?, 3, 2, NOW());"
+					+ "VALUES (?, 2, ?, ?, 3, 2, NOW())"
 					);
 			pstmt.setString(1,  docNo);
 			pstmt.setInt(2, teamCode);
@@ -782,5 +824,6 @@ public class ApprovalDAO {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
 		}
 	}
+
 }
 

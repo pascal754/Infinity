@@ -190,7 +190,7 @@
 									out.print("수신완료&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
 								case REJECTED:
-									out.print("반려&nbsp" + rs.name + "&nbsp" + rs.date);
+									out.print("반송&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
 								}
 								out.println("<br>");
