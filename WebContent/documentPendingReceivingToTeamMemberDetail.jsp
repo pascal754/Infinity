@@ -217,7 +217,7 @@
             <input type="hidden" name="startTime" value="<%=docVo.getStartTime() %>">
             <input type="hidden" name="approvalLine" value="<%=approvalLine %>">
             <input type="submit" value="수신 승인">
-            <button type="submit" formaction="returnDocument.do?docNo=<%=docNo %>">반려</button>
+            <button type="submit" formaction="returnDocument.do?docNo=<%=docNo %>">반송</button>
 </form>
 </body>
 </html>
