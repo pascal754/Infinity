@@ -12,11 +12,17 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.sql.*" %>
 <%@ page import="javax.naming.*" %>
+<%@ page import="net.infinity.db.SecurityUtil"%>
 
 <%
 	request.setCharacterEncoding("UTF-8");
 	String id = request.getParameter("id");
 	String password = request.getParameter("password");
+	
+	//암호화
+	SecurityUtil securityUtil = new SecurityUtil();
+	String ppwd = securityUtil.encryptSHA256(password);
+
 	
 	if (id == "") {
 		id = "-1";
@@ -50,7 +56,7 @@
 			dbTitle_code = rs.getInt("title_code");
 			
 			
-			if (Integer.parseInt(id) == dbId && password.equals(dbPassword)){
+			if (Integer.parseInt(id) == dbId && ppwd.equals(dbPassword)){
 				//login success and create session
 				System.out.println("login successfuly");
 				

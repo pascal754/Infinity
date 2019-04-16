@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import net.infinity.db.ApprovalDAO;
 
-public class ActionReturnDocument implements Action {
+public class ActionReturnDocumentByTeamMemberConfirmed implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
@@ -19,11 +19,21 @@ public class ActionReturnDocument implements Action {
 
 		String id = (String)mySession.getAttribute("id");
 		
+
+		request.setCharacterEncoding("UTF-8");
+
 		String docNo = request.getParameter("docNo");
-		System.out.println("ActionReturnDocument doc no: " + docNo);
+		String comment = request.getParameter("comment");
+		System.out.println("ActionReturnDocumentByTeamMemberConfirmed doc no: " + docNo);
+		
+		ApprovalDAO appDao = new ApprovalDAO();
+		appDao.returnDocument(docNo, Integer.parseInt(id), comment);
+		appDao.dbClose();
+		
 		request.setAttribute("docNo", docNo);
+		
 		ActionForward af = new ActionForward();
-		af.setPath("returnDocumentByTeamMember.jsp");
+		af.setPath("documentPendingReceivingToTeamMember.do");
 		af.setRedirect(false);
 		
 		return af;

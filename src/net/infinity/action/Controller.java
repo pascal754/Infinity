@@ -104,6 +104,9 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("documentPendingSendingToCEO.do")) {
     		action = new ActionDocumentPendingSendingToCEO();
     		af = action.execute(request, response);
+     	} else if (command.equals("resetPassword.do")) {
+    		action = new ResetPassword();
+    		af = action.execute(request, response);
      	} else if (command.equals("rejectDocumentByTeamLeader.do")) {
     		action = new ActionRejectDocumentByTeamLeader();
     		af = action.execute(request, response);
@@ -128,8 +131,19 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("documentReturnedPending.do")) {
     		action = new ActionDocumentReturnedPending();
     		af = action.execute(request, response);
-     	}
-    	
+     	} else if (command.equals("returnDocumentByTeamMemberConfirmed.do")) {
+    		action = new ActionReturnDocumentByTeamMemberConfirmed();
+    		af = action.execute(request, response);
+     	} else if (command.equals("returnDocumentConfirmedByTeamLeader.do")) {
+    		action = new ActionReturnDocumentByTeamLeaderConfirmed();
+    		af = action.execute(request, response);
+     	} else if (command.equals("documentReturnedConfirmed.do")) {
+    		action = new ActionDocumentReturnedConfirmed();
+    		af = action.execute(request, response);
+     	} else if (command.equals("documentReturnedReceived.do")) {
+    		action = new ActionDocumentReturnedReceived();
+    		af = action.execute(request, response);
+     	} 
     	
 
     	

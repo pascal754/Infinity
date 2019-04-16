@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="net.infinity.db.*" %>
 
+
+<% session.setMaxInactiveInterval(-1);%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -83,14 +85,9 @@ text-align:left;
 	&nbsp;
 	<%=title %>
 
-	<%
-	if (name.equals("momo")) {
-%>
-		<br>관리자님 반갑습니다.<br>
-		<a href="memberList.jsp">회원 목록 보기</a>
-<%	
-	}
-%>
+	<%if (name.equals("momo")) {
+		response.sendRedirect("adminPage.jsp");
+	}%>
 
 <br><br>
 
@@ -121,7 +118,9 @@ text-align:left;
 			<li class="list"><a href="documentPendingSendingToCEOByTeam.do" target="content">발신진행</a></li>
 			<li class="list"><a href="documentCompleteByTeamLeader.do" target="content">발신완료</a></li>
 			<li class="list"><a href="documentRejected.do" target="content">반려함</a></li>
-			
+			<li class="list"><a href="documentReturnedPending.do" target="content">반송대기</a></li>
+			<li class="list"><a href="documentReturnedConfirmed.do" target="content">반송완료</a></li>
+			<li class="list"><a href="documentReturnedReceived.do" target="content">반송수신</a></li>
 		</ul>
 		</li>
 	<%}else if(title_code==3){ %>
@@ -130,6 +129,7 @@ text-align:left;
 			<li class="list"><a href="documentPendingSendingToCEO.do" target="content">대기문서</a></li>
 			<li class="list"><a href="documentCompleteByCEO.do" target="content">완료문서</a></li>
 			<li class="list"><a href="documentRejectedByCEO.do" target="content">반려함</a></li>
+			<li class="list"><a href="" target="content">반송수신</a></li>
 		</ul>
 		</li>
 		
@@ -148,14 +148,14 @@ text-align:left;
 		</li>
 		<% }%>
 <%if(title_code==1){ %>
-	<li><a><b>팀 수신</b></a>
+	<li><a><b>팀 수신함</b></a>
 		<ul>
 			<li class="list"><a href="documentPendingReceiving.do" target="content">수신대기</a></li>
 			<li class="list"><a href="documentBeingReceived.do" target="content">수신진행</a></li>
 			<li class="list"><a href="documentCompleteReceiving.do" target="content">수신완료</a></li>
 		</ul>
 		</li>
-	<li><a><b>팀 발신</b></a>
+	<li><a><b>팀 발신함</b></a>
 		<ul>
 			<li class="list"><a href="documentBeingSentByTeam.do" target="content">발신진행</a></li>
 			<li class="list"><a href="documentCompleteByTeamLeader.do" target="content">발신완료</a></li>
@@ -169,7 +169,12 @@ text-align:left;
 	<li><a><b>반송함</b></a>
 		<ul>
 			<li class="list"><a href="documentReturnedPending.do" target="content">반송대기</a></li>
-			<li class="list"><a href="" target="content">반송완료</a></li>
+			<li class="list"><a href="documentReturnedConfirmed.do" target="content">반송완료</a></li>
+		</ul>
+		</li>
+	<li><a><b>반송수신함</b></a>
+		<ul>
+			<li class="list"><a href="" target="content">반송수신</a></li>
 		</ul>
 		</li>
 		<%} %>

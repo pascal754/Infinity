@@ -47,7 +47,7 @@ public class RejectedDocumentDAO {
 		try {
 			pstmt = conn.prepareStatement(
 					"SELECT * from  approval a, document b "
-					+ "WHERE  a.approval_order=2 AND a.type = 1 AND a.approved=2 AND a.approver = ? AND a.doc_no = b.doc_no"
+					+ "WHERE a.approval_order=2 AND a.type = 1 AND a.approved=2 AND a.approver = ? AND a.doc_no = b.doc_no"
 					);
 			pstmt.setInt(1, teamLeaderNo);
 			rs = pstmt.executeQuery();
@@ -72,14 +72,16 @@ public class RejectedDocumentDAO {
 			
 			EmpDAO empDao = new EmpDAO();
 			EmpVO ceoVo = empDao.getCeoVO();
+			int teamCode = empDao.getTeamCodeFromEmpNo(teamLeaderNo);
 			empDao.dbClose();
 			
 			
 			pstmt = conn.prepareStatement(
 					"SELECT * from  approval a, document b "
-					+ "WHERE  a.approval_order=3 AND a.type = 1 AND a.approved=2 AND a.approver = ? AND a.doc_no = b.doc_no"
+					+ "WHERE a.team_code = ? and a.approval_order=3 AND a.type = 1 AND a.approved=2 AND a.approver = ? AND a.doc_no = b.doc_no"
 					);
-			pstmt.setInt(1, ceoVo.getEmpNo());
+			pstmt.setInt(1, teamCode);
+			pstmt.setInt(2, ceoVo.getEmpNo());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				RejectedDocumentVO rejDocVo = new RejectedDocumentVO();
@@ -152,10 +154,123 @@ public class RejectedDocumentDAO {
 
 		try {
 			pstmt = conn.prepareStatement(
-					"SELECT * from approval a, document b WHERE a.team_code=? and TYPE = 2 and approval_order=2 and approved=2 AND a.doc_no=b.doc_no"
+					"SELECT * from approval a, document b "
+					+ "WHERE team_code = ? and type=2 and approval_order=2 and approved=2 and a.doc_no = b.doc_no AND a.doc_no IN "
+					+ "(SELECT doc_no from approval a WHERE a.team_code = ? and type = 2 and approval_order=2 and approved=2 " 
+					+ "except (SELECT doc_no from approval a WHERE a.team_code = ? and TYPE = 2 and approval_order=3 and approved=2))"
+					);
+			pstmt.setInt(1, teamCode);
+			pstmt.setInt(2, teamCode);
+			pstmt.setInt(3, teamCode);
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				RejectedDocumentVO rejDocVo = new RejectedDocumentVO();
+				rejDocVo.setDocNo(rs.getString("doc_no"));
+				rejDocVo.setEmpNo(rs.getInt("emp_no"));
+				rejDocVo.setTitle(rs.getString("title"));
+				rejDocVo.setContent(rs.getString("content"));
+				rejDocVo.setStartTime(rs.getTimestamp("start_time"));
+				rejDocVo.setSaveTime(rs.getTimestamp("save_time"));
+				rejDocVo.setRejectedDate(rs.getDate("approved_time"));
+				rejDocVo.setComment(rs.getString("comment"));
+				rejDocVo.setApprovalOrder(rs.getInt("approval_order"));
+				rejDocVo.setApprover(rs.getInt("approver"));
+				
+				list.add(rejDocVo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		
+		return list;
+	}
+	
+	public List<RejectedDocumentVO> getDocumentReturnedConfirmed(int teamLeaderNo) {
+		List<RejectedDocumentVO> list = new ArrayList<RejectedDocumentVO>();
+		
+		EmpDAO empDao = new EmpDAO();
+		int teamCode = empDao.getTeamCodeFromEmpNo(teamLeaderNo);
+		empDao.dbClose();
+
+		try {
+			pstmt = conn.prepareStatement(
+					/*
+					"SELECT * FROM approval a, document b "
+					+ "WHERE TYPE=2 and team_code = ? and approver = ? and approval_order=3 and approved=2 and a.doc_no = b.doc_no AND a.doc_no IN "
+					+ "(SELECT doc_no FROM approval WHERE type=2 AND team_code = ? AND approver = ? AND approval_order=3 AND approved=2)"
+					*/
+					/*"SELECT * FROM document a, "
+					+ "(SELECT * FROM approval WHERE type=2 AND team_code = ? AND approver = ? AND approval_order=3 AND approved=2) b "
+					+ "WHERE a.doc_no=b.doc_no;"
+					*/
+					"SELECT * FROM document a, "
+					+ "(SELECT * FROM approval WHERE team_code = ? AND type=2 AND approval_order=2 AND approved=2 AND doc_no IN "
+					+ "(SELECT doc_no FROM approval WHERE type=2 AND team_code = ? AND approval_order=3 AND approved=2)) b "
+					+ "WHERE a.doc_no = b.doc_no"
+					);
+			/*
+			pstmt.setInt(1, teamCode);
+			pstmt.setInt(2, teamLeaderNo);
+			pstmt.setInt(3, teamCode);
+			pstmt.setInt(4, teamLeaderNo);
+			*/
+			/*
+			pstmt.setInt(1, teamCode);
+			pstmt.setInt(2, teamLeaderNo);
+			
+			*/
+			pstmt.setInt(1, teamCode);
+			pstmt.setInt(2, teamCode);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				RejectedDocumentVO rejDocVo = new RejectedDocumentVO();
+				rejDocVo.setDocNo(rs.getString("doc_no"));
+				rejDocVo.setEmpNo(rs.getInt("emp_no"));
+				rejDocVo.setTitle(rs.getString("title"));
+				rejDocVo.setContent(rs.getString("content"));
+				rejDocVo.setStartTime(rs.getTimestamp("start_time"));
+				rejDocVo.setSaveTime(rs.getTimestamp("save_time"));
+				rejDocVo.setRejectedDate(rs.getDate("approved_time"));
+				rejDocVo.setComment(rs.getString("comment"));
+				rejDocVo.setApprovalOrder(rs.getInt("approval_order"));
+				rejDocVo.setApprover(rs.getInt("approver"));
+				
+				list.add(rejDocVo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		
+		return list;
+	}
+	
+	public List<RejectedDocumentVO> getDocumentReturnedReceived(int empNo) {
+		List<RejectedDocumentVO> list = new ArrayList<RejectedDocumentVO>();
+		
+		EmpDAO empDao = new EmpDAO();
+		int teamCode = empDao.getTeamCodeFromEmpNo(empNo);
+		empDao.dbClose();
+
+		try {
+			pstmt = conn.prepareStatement(
+					"SELECT * FROM document a, " + 
+					"(SELECT * FROM approval WHERE TYPE=2 and approval_order=2 AND approved=2 AND doc_no IN "
+					+ "(SELECT doc_no FROM approval WHERE TYPE=1 AND team_code = ? AND approval_order=2 AND approved=1 AND doc_no IN "
+					+ "(SELECT doc_no FROM approval WHERE TYPE=2 AND approval_order=3 AND approved=2))) b " 
+					+ "WHERE a.doc_no=b.doc_no"
 					);
 			pstmt.setInt(1, teamCode);
 			rs = pstmt.executeQuery();
+					
 			while (rs.next()) {
 				RejectedDocumentVO rejDocVo = new RejectedDocumentVO();
 				rejDocVo.setDocNo(rs.getString("doc_no"));

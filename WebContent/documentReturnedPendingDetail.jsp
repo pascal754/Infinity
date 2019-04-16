@@ -18,8 +18,25 @@
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
 	
+	
+	
 	String docNo = request.getParameter("docNo");
 
+	System.out.println("documentReturnedPendingDetail.jsp");
+	System.out.println("doc no: " + docNo);
+	
+	
+	List<RejectedDocumentVO> list = (List<RejectedDocumentVO>)session.getAttribute("docList");
+	System.out.println("documentRejectedDetail.jsp list.size(): " + list.size());
+	RejectedDocumentVO rejDocVo = null;
+	for (RejectedDocumentVO x : list) {
+		if (x.getDocNo().equals(docNo)) {
+			rejDocVo = x;
+			break;
+		}
+	}
+	
+	
 	DocumentDAO docDao = new DocumentDAO();
 	DocumentVO docVo = docDao.getDraftDocument(docNo);
 	docDao.dbClose();
@@ -27,6 +44,7 @@
 	ApprovalDAO appDao = new ApprovalDAO();
 	
 	List<Integer> receiversCode = appDao.getReceiversCode(docNo);
+
 	
 	EmpDAO empDao = new EmpDAO();
 	EmpVO empVo = empDao.getEmpVO(docVo.getEmpNo());
@@ -38,8 +56,8 @@
 	
 	//List<String> allTeams = (List<String>)request.getAttribute("allTeams");
 	
-	
-	System.out.println("**pendingSendingToCEODetail.jsp**");
+	//sender information
+	System.out.println("**documentReturnedPendingDetail.jsp**");
 	System.out.println("writer emp no: " + empVo.getEmpNo());
 	System.out.println("team leader no: " + empDao.getTeamLeaderNoFromEmpNo(empVo.getEmpNo()));
 	EmpVO teamLeaderVo = empDao.getEmpVO(empDao.getTeamLeaderNoFromEmpNo(empVo.getEmpNo()));
@@ -50,12 +68,10 @@
 	
 	Date approvedDateWriter = appDao.getApprovedDate(docNo, docVo.getEmpNo());
 	Date approvedDateTeamLeader = appDao.getApprovedDate(docNo, teamLeaderVo.getEmpNo());
+	Date approvedDateCEO = appDao.getApprovedDate(docNo, ceoVo.getEmpNo());
+
 	
-	Date approvedDateCEO = null;
-	
-	if (appLine == 3)
-		approvedDateCEO = appDao.getApprovedDate(docNo, ceoVo.getEmpNo());
-	
+	int receiverTeamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(Integer.parseInt(id));
 	empDao.dbClose();	
 	
 %>
@@ -117,7 +133,7 @@
 </head>
 
 <body>
-<form action="CompleteReportByCEO.do" method="post">
+<form action="returnDocumentConfirmedByTeamLeader.do" method="post">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>
@@ -174,7 +190,7 @@
 									out.print("수신완료&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
 								case REJECTED:
-									out.print("반송&nbsp" + rs.name + "&nbsp" + rs.date);
+									out.print("반려&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
 								}
 								out.println("<br>");
@@ -204,6 +220,16 @@
             <br>
             <table>
                 <tr class="c">
+                    <td class="e">반송사유</td>
+                </tr>
+                <tr class="c">
+                    <td class="e"><textarea name="content" id="content" required cols="80" rows="5" readonly><%=rejDocVo.getComment() %></textarea></td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table>
+                <tr class="c">
                     <td class="e">첨부</td>
                 </tr>
                 <tr class="c">
@@ -216,6 +242,12 @@
             <input type="hidden" name="doc_no" value="<%=docVo.getDocNo() %>">
             <input type="hidden" name="startTime" value="<%=docVo.getStartTime() %>">
             <input type="hidden" name="approvalLine" value="<%=approvalLine %>">
+            <%
+            	System.out.println(teamLeaderVo.getEmpNo());
+            	System.out.println(Integer.parseInt(id));
+            	if (receiverTeamLeaderNo == Integer.parseInt(id))
+            		out.println("<input type=\"submit\" value=\"반송승인\">");
+            %>
 </form>
 </body>
 </html>
