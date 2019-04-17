@@ -15,6 +15,7 @@
 <%@ page import="javax.servlet.http.HttpServletResponse" %>
 <%@ page import="javax.sql.DataSource" %>
 
+<%@ page import="java.util.List"%>
 <%@ page import="net.infinity.db.DocumentVO" %>
 <%@ page import="net.infinity.db.EmpDAO" %>
 <%@ page import="net.infinity.db.EmpVO" %>
@@ -49,6 +50,7 @@
 		String startTime = multi.getParameter("startTime");
 		String approvalLine = multi.getParameter("approvalLine");
 		String[] teams = multi.getParameterValues("teams");
+		String filename= multi.getFilesystemName("filename");
 		//List<String> allTeams = (List<String>)request.get("allTeams");
 		//request.setAttribute("allTeams", allTeams);
 	
@@ -72,6 +74,7 @@
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmt2 = null;
 		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmtatt = null;
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		
@@ -93,6 +96,21 @@
 				pstmt2.setString(2, content);
 				pstmt2.setString(3, docNo);
 				pstmt2.executeUpdate();
+				if(filename!=null) {
+					AttachDAO attachDAO = new AttachDAO();
+					List<String> getfilename = attachDAO.getFilename(docNo);
+					attachDAO.dbClose();
+				
+					if(!getfilename.contains(multi.getOriginalFileName("filename"))) {
+						pstmtatt = conn.prepareStatement(
+								"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
+							);
+						pstmtatt.setString(1, docNo);
+						pstmtatt.setString(2, filename);
+						pstmtatt.executeUpdate();
+					}
+				}
+				
 			} else {
 				pstmt2 = conn.prepareStatement(
 					"INSERT INTO document (doc_no, emp_no, title, content, start_time, save_time)" + 
@@ -105,7 +123,14 @@
 				pstmt2.setTimestamp(5, Timestamp.valueOf(startTime));
 				pstmt2.executeUpdate();
 			
-			
+				if(filename!=null) {
+					pstmtatt = conn.prepareStatement(
+							"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
+						);
+					pstmtatt.setString(1, docNo);
+					pstmtatt.setString(2, filename);
+					pstmtatt.executeUpdate();
+				}
 			
 			
 			} // insert into db
