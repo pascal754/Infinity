@@ -22,6 +22,7 @@ padding-left:0px;
 position:relative;
 top:54px;
 left:175px;
+text-decoration: underline;
 
 }
 
@@ -34,14 +35,6 @@ left:1820px;
 
 }
 
-#nav_menu3{
-list-style-type:none;
-padding-left:0px;
-position:fixed;
-top:20px;
-left:1500px;
-
-}
 
 #nav_menu ul li {
 display:inline;
@@ -79,12 +72,13 @@ header{
 
 
 </head>
-
 <header>
 	<h1>Document Approval System</h1>
 </header>
 
+
 <body>
+
 	
 	
 		<%
@@ -108,13 +102,13 @@ header{
 				response.sendRedirect("adminPage.jsp");
 			}%>
 	
-<br> 
+<br>
 
 <div id="nav_menu">
 
 <ul id="nav_menu1">
 	<%if(title_code==1){ %>
-	<li><a href="approvalLine.jsp" target="content">결재문서 작성</a></li>
+	<li><a href="approvalLine.jsp" target="content"><strong>결재문서 작성</strong></a></li>
 	<%} %>
 </ul>	
 
