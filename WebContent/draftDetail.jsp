@@ -16,6 +16,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <title>Insert title here</title>
 <%
+	
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
 	
@@ -57,6 +58,9 @@
 	}
 	empDao.dbClose();	
 	
+	AttachDAO attachDAO = new AttachDAO();
+	List<String> getfilename = attachDAO.getFilename((String)docVo.getDocNo());
+	attachDAO.dbClose();
 %>
 <style>
             #doc_title {
@@ -129,7 +133,7 @@
 	    })
 	})
 </script>
-<form action="saveDocument.do" id="document" method="post">
+<form action="saveDocument.do" id="document" method="post" enctype="multipart/form-data">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>
@@ -204,11 +208,16 @@
             <br>
             <table>
                 <tr class="c">
-                    <td class="e">첨부</td>
-                </tr>
+                    <td class="e">첨부<input type="file" name="filename"></td>
+                  	</tr>
                 <tr class="c">
-                    <td class="e">&nbsp;</td>
+                  	<td class="e">
+                  	<%for(String filenames : getfilename){
+                	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><br>");
+                  }%>
+                  	</td>
                 </tr>
+
             </table>
             
   

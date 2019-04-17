@@ -198,7 +198,7 @@
 	    })
 	})
 </script>
-<form action="saveDocument.do" id="document" method="post">
+<form action="saveDocument.do" id="document" method="post" enctype="multipart/form-data">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>
@@ -272,10 +272,7 @@
             <br>
             <table>
                 <tr class="c">
-                    <td class="e">첨부</td>
-                </tr>
-                <tr class="c">
-                    <td class="e">&nbsp;</td>
+                    <td class="e">첨부 <input type="file" name="filename"></td>
                 </tr>
             </table>
             <input type="hidden" name="emp_no" value="<%=id %>">

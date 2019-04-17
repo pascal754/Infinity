@@ -3,13 +3,7 @@ package net.infinity.db;
 public class AttachVO {
 	private String doc_no;
 	private String filename;
-	private String uploadpath;
-	public String getUploadpath() {
-		return uploadpath;
-	}
-	public void setUploadpath(String uploadpath) {
-		this.uploadpath = uploadpath;
-	}
+
 	public String getDoc_no() {
 		return doc_no;
 	}

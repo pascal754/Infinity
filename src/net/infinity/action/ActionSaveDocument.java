@@ -5,15 +5,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+import net.infinity.db.AttachDAO;
 import net.infinity.db.DocumentVO;
 import net.infinity.db.EmpDAO;
 import net.infinity.db.EmpVO;
@@ -25,15 +29,30 @@ public class ActionSaveDocument implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		System.out.println("1");
+		
 		request.setCharacterEncoding("UTF-8");
-		String docNo = request.getParameter("doc_no");
-		String empNo = request.getParameter("emp_no");
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		String startTime = request.getParameter("startTime");
-		String approvalLine = request.getParameter("approvalLine");
-		String[] teams = request.getParameterValues("teams");
+		MultipartRequest multi = null;	
+		int filesize=5*1024*1024;
+		String uploadPath = request.getServletContext().getRealPath("/Upload");
+		try{
+
+			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8"); 
+
+			 }catch (Exception e) {
+
+				e.printStackTrace();
+
+			 } 
+
+		
+		String docNo = multi.getParameter("doc_no");
+		String empNo = multi.getParameter("emp_no");
+		String title = multi.getParameter("title");
+		String content = multi.getParameter("content");
+		String startTime = multi.getParameter("startTime");
+		String approvalLine = multi.getParameter("approvalLine");
+		String[] teams = multi.getParameterValues("teams");
+		String filename= multi.getFilesystemName("filename");
 		//List<String> allTeams = (List<String>)request.get("allTeams");
 		//request.setAttribute("allTeams", allTeams);
 
@@ -43,8 +62,7 @@ public class ActionSaveDocument implements Action {
 		System.out.println(title);
 		System.out.println(content);
 		System.out.println(startTime);
-		
-
+		System.out.println(filename);
 		/*
 		System.out.println("all teams: ");
 		for (String x : allTeams) {
@@ -64,6 +82,7 @@ public class ActionSaveDocument implements Action {
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmt2 = null;
 		PreparedStatement pstmt3 = null;
+		PreparedStatement pstmtatt = null;
 		ResultSet rs = null;
 		ResultSet rs2 = null;
 		
@@ -77,6 +96,7 @@ public class ActionSaveDocument implements Action {
 			pstmt.setString(1, docNo);
 			rs = pstmt.executeQuery();
 			
+			
 			if (rs.next()) { //update db
 				pstmt2 = conn.prepareStatement(
 					"UPDATE document SET title=?, content=?, save_time=now() WHERE doc_no=?"
@@ -85,6 +105,19 @@ public class ActionSaveDocument implements Action {
 				pstmt2.setString(2, content);
 				pstmt2.setString(3, docNo);
 				pstmt2.executeUpdate();
+				
+				AttachDAO attachDAO = new AttachDAO();
+				List<String> getfilename = attachDAO.getFilename(docNo);
+				attachDAO.dbClose();
+				
+				if(!getfilename.contains(multi.getOriginalFileName("filename"))) {
+					pstmtatt = conn.prepareStatement(
+							"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
+						);
+					pstmtatt.setString(1, docNo);
+					pstmtatt.setString(2, filename);
+					pstmtatt.executeUpdate();
+				}
 			} else {
 				pstmt2 = conn.prepareStatement(
 					"INSERT INTO document (doc_no, emp_no, title, content, start_time, save_time)" + 
@@ -97,7 +130,12 @@ public class ActionSaveDocument implements Action {
 				pstmt2.setTimestamp(5, Timestamp.valueOf(startTime));
 				pstmt2.executeUpdate();
 				
-				
+				pstmtatt = conn.prepareStatement(
+						"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
+					);
+				pstmtatt.setString(1, docNo);
+				pstmtatt.setString(2, filename);
+				pstmtatt.executeUpdate();
 				
 				
 			} // insert into db
