@@ -17,20 +17,17 @@
 	docDao.deleteDocument(docNo);
 	docDao.dbClose();
 	
-	DocumentVO docVo = docDao.getDraftDocument(docNo);
-	
 	AttachDAO attachDAO = new AttachDAO();
-	List<String> getfilename = attachDAO.getFilename((String)docVo.getDocNo());
-	
+	List<String> getfilename = attachDAO.getFilename(docNo);
 	
 	for(String filenames : getfilename){
-		String fileName = request.getParameter("filenames");
-	ServletContext context = getServletContext();
-	String downloadPath = context.getRealPath("Upload");
-	String filePath = downloadPath + "/" + fileName;
-	File file = new File(filePath);
-	
-	file.delete();
+		String fileName = filenames;
+		ServletContext context = getServletContext();
+		String downloadPath = context.getRealPath("Upload");
+		String filePath = downloadPath + "/" + fileName;
+		File file = new File(filePath);
+		
+		file.delete();
 	}
 	
 	attachDAO.FileDelete(docNo);
