@@ -53,7 +53,6 @@ public class ActionSaveDocument implements Action {
 		String approvalLine = multi.getParameter("approvalLine");
 		String[] teams = multi.getParameterValues("teams");
 		String filename= multi.getFilesystemName("filename");
-		String realfilename= multi.getOriginalFileName("filename");
 		//List<String> allTeams = (List<String>)request.get("allTeams");
 		//request.setAttribute("allTeams", allTeams);
 
@@ -64,7 +63,6 @@ public class ActionSaveDocument implements Action {
 		System.out.println(content);
 		System.out.println(startTime);
 		System.out.println(filename);
-		System.out.println(realfilename);
 		/*
 		System.out.println("all teams: ");
 		for (String x : allTeams) {
@@ -114,11 +112,10 @@ public class ActionSaveDocument implements Action {
 				
 				if(!getfilename.contains(multi.getOriginalFileName("filename"))) {
 					pstmtatt = conn.prepareStatement(
-							"INSERT INTO attach (doc_no, filename, uploadpath) VALUES (?,?,?)"
+							"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
 						);
 					pstmtatt.setString(1, docNo);
 					pstmtatt.setString(2, filename);
-					pstmtatt.setString(3, uploadPath);
 					pstmtatt.executeUpdate();
 				}
 			} else {
@@ -134,11 +131,10 @@ public class ActionSaveDocument implements Action {
 				pstmt2.executeUpdate();
 				
 				pstmtatt = conn.prepareStatement(
-						"INSERT INTO attach (doc_no, filename, uploadpath) VALUES (?,?,?)"
+						"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
 					);
 				pstmtatt.setString(1, docNo);
 				pstmtatt.setString(2, filename);
-				pstmtatt.setString(3, uploadPath);
 				pstmtatt.executeUpdate();
 				
 				
