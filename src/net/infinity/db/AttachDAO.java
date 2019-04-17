@@ -58,4 +58,32 @@ public class AttachDAO {
 		return filename;
 	}
 	
+	public void FileDelete(String doc_no) {
+		
+		try {
+			pstmt = conn.prepareStatement("DELETE FROM attach WHERE doc_no = ?");
+			pstmt.setString(1,  doc_no);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {if (pstmt != null) {pstmt.close();}} catch (Exception e) {e.printStackTrace();}
+		}
+		
+	}
+public void FileNameDelete(String filename) {
+		
+		try {
+			pstmt = conn.prepareStatement("DELETE FROM attach WHERE filename = ?");
+			pstmt.setString(1,  filename);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {if (pstmt != null) {pstmt.close();}} catch (Exception e) {e.printStackTrace();}
+		}
+		
+	}
 }

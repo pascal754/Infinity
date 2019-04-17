@@ -105,17 +105,19 @@ public class ActionSaveDocument implements Action {
 				pstmt2.setString(3, docNo);
 				pstmt2.executeUpdate();
 				
-				AttachDAO attachDAO = new AttachDAO();
-				List<String> getfilename = attachDAO.getFilename(docNo);
-				attachDAO.dbClose();
+				if(filename!=null) {
+					AttachDAO attachDAO = new AttachDAO();
+					List<String> getfilename = attachDAO.getFilename(docNo);
+					attachDAO.dbClose();
 				
-				if(!getfilename.contains(multi.getOriginalFileName("filename"))) {
-					pstmtatt = conn.prepareStatement(
-							"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
-						);
-					pstmtatt.setString(1, docNo);
-					pstmtatt.setString(2, filename);
-					pstmtatt.executeUpdate();
+					if(!getfilename.contains(multi.getOriginalFileName("filename"))) {
+						pstmtatt = conn.prepareStatement(
+								"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
+							);
+						pstmtatt.setString(1, docNo);
+						pstmtatt.setString(2, filename);
+						pstmtatt.executeUpdate();
+					}
 				}
 			} else {
 				pstmt2 = conn.prepareStatement(
@@ -129,13 +131,14 @@ public class ActionSaveDocument implements Action {
 				pstmt2.setTimestamp(5, Timestamp.valueOf(startTime));
 				pstmt2.executeUpdate();
 				
+				if(filename!=null) {
 				pstmtatt = conn.prepareStatement(
 						"INSERT INTO attach (doc_no, filename) VALUES (?,?)"
 					);
 				pstmtatt.setString(1, docNo);
 				pstmtatt.setString(2, filename);
 				pstmtatt.executeUpdate();
-				
+				}
 				
 			} // insert into db
 			

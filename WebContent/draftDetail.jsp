@@ -213,7 +213,7 @@
                 <tr class="c">
                   	<td class="e">
                   	<%for(String filenames : getfilename){
-                	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><br>");
+                	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><button type='submit' formaction='FileDelete.jsp?fileName="+filenames+"&docNo="+docNo+"'>삭제</button><br>");
                   }%>
                   	</td>
                 </tr>
