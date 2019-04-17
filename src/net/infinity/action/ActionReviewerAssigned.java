@@ -33,7 +33,7 @@ public class ActionReviewerAssigned implements Action {
 		else System.out.println("ActionReviewerAssigned reviewer not added");
 		appDao.dbClose();
 		ActionForward af = new ActionForward();
-		af.setPath("documentPendingReceving.do");
+		af.setPath("documentPendingReceiving.do");
 		af.setRedirect(false);
 		
 		return af;

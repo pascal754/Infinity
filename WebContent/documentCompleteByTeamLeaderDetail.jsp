@@ -173,6 +173,9 @@
 								case APPROVED:
 									out.print("수신완료&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
+								case REJECTED_PENDING:
+									out.print("반송대기&nbsp" + rs.name + "&nbsp" + rs.date);
+									break;
 								case REJECTED:
 									out.print("반송&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;

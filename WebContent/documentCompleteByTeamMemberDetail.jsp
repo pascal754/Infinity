@@ -162,7 +162,7 @@
                         	TeamDAO teamDao = new TeamDAO();
                         	ReceiverStatus rs;
                         	for (int x : receiversCode) {
-                        		out.print(teamDao.getTeamVO(x).getTeamName()+"&nbsp");
+	                    		out.print(teamDao.getTeamVO(x).getTeamName()+"&nbsp");
 								rs = appDao.getReceiverStatus(docNo, x);
 								switch (rs.approval) {
 								case PENDING:
@@ -173,6 +173,9 @@
 									break;
 								case APPROVED:
 									out.print("수신완료&nbsp" + rs.name + "&nbsp" + rs.date);
+									break;
+								case REJECTED_PENDING:
+									out.print("반송대기&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
 								case REJECTED:
 									out.print("반송&nbsp" + rs.name + "&nbsp" + rs.date);
