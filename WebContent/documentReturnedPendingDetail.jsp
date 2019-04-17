@@ -74,6 +74,9 @@
 	int receiverTeamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(Integer.parseInt(id));
 	empDao.dbClose();	
 	
+	AttachDAO attachDAO = new AttachDAO();
+	List<String> getfilename = attachDAO.getFilename((String)docVo.getDocNo());
+	attachDAO.dbClose();
 %>
 <style>
             #doc_title {
@@ -236,7 +239,10 @@
                     <td class="e">첨부</td>
                 </tr>
                 <tr class="c">
-                    <td class="e">&nbsp;</td>
+                    <td class="e"><%for(String filenames : getfilename){
+                	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><br>");
+                  }%>
+                  </td>
                 </tr>
             </table>
             
