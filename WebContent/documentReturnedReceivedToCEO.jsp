@@ -22,7 +22,7 @@
 	session.setAttribute("docList", list);
 	//request.setAttribute("docList", list);
 	//request.getRequestDispatcher("documentRejectedDetail.jsp").forward(request, response);
-	System.out.println("documentReturnedReceived.jsp list.size(): " + list.size());
+	System.out.println("documentReturnedReceivedToCEO.jsp list.size(): " + list.size());
 %>
 
 	<table>
@@ -32,20 +32,16 @@
 			<th>내용</th>
 			<th>작성자</th>
 			<th>상신일</th>
-			<th>반송팀</th>
 			<th>반송일</th>
-			<th>반송사유</th>
 		</tr>
 		<%
 			ApprovalDAO appDao = new ApprovalDAO();
 			EmpDAO empDao = new EmpDAO();
 			for (RejectedDocumentVO x : list) {
-				out.println("<tr><td><a href=\"documentReturnedReceivedDetail.jsp?docNo=" + x.getDocNo() + "&approver=" + x.getApprover() + "\">" + x.getDocNo()+ "</a></td><td>"
+				out.println("<tr><td><a href=\"documentReturnedReceivedToCEODetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
 					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>" + empDao.getEmpName(x.getEmpNo()) + "</td><td>"
 					+ appDao.getApprovedDate(x.getDocNo(), x.getEmpNo()) + "</td><td>"
-					+ empDao.getTeamName(x.getApprover()) + "</td><td>"
-					+ x.getRejectedDate() + "</td><td>"
-					+ StringUtils.left(x.getComment(), 20)
+					+ x.getRejectedDate()
 					+ "</td></tr>"
 				);
 			}

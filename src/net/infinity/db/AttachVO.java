@@ -3,7 +3,7 @@ package net.infinity.db;
 public class AttachVO {
 	private String doc_no;
 	private String filename;
-	
+
 	public String getDoc_no() {
 		return doc_no;
 	}

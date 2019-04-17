@@ -74,6 +74,9 @@
 	int receiverTeamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(Integer.parseInt(id));
 	empDao.dbClose();	
 	
+	AttachDAO attachDAO = new AttachDAO();
+	List<String> getfilename = attachDAO.getFilename((String)docVo.getDocNo());
+	attachDAO.dbClose();
 %>
 <style>
             #doc_title {
@@ -189,8 +192,11 @@
 								case APPROVED:
 									out.print("수신완료&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
+								case REJECTED_PENDING:
+									out.print("반송대기&nbsp" + rs.name + "&nbsp" + rs.date);
+									break;
 								case REJECTED:
-									out.print("반려&nbsp" + rs.name + "&nbsp" + rs.date);
+									out.print("반송&nbsp" + rs.name + "&nbsp" + rs.date);
 									break;
 								}
 								out.println("<br>");
@@ -233,7 +239,10 @@
                     <td class="e">첨부</td>
                 </tr>
                 <tr class="c">
-                    <td class="e">&nbsp;</td>
+                    <td class="e"><%for(String filenames : getfilename){
+                	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><br>");
+                  }%>
+                  </td>
                 </tr>
             </table>
             

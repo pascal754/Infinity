@@ -277,14 +277,20 @@ public class DocumentDAO {
 	public List<DocumentVO> getDocumentPendingReceiving(int empNo) {
 		List<DocumentVO> list = new ArrayList<DocumentVO>();
 		DocumentDAO docDao = new DocumentDAO();
+		EmpDAO empDao = new EmpDAO();
+		int teamCode = empDao.getTeamCodeFromEmpNo(empNo);
+		int teamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(empNo);
+		empDao.dbClose();
 
 		try {
-			pstmt = conn.prepareStatement("select * from document where doc_no in "
-					+ "(select doc_no from approval where team_code = "
-					+ "(select team_code from emp where emp_no= ?) "
-					+ "and type=2 and approval_order=1 and approved=0)"
+			pstmt = conn.prepareStatement(
+					"SELECT * FROM document WHERE doc_no IN " + 
+					"(SELECT doc_no FROM approval WHERE TYPE=2 AND team_code = ? AND approver = ? AND approval_order=1 AND approved=0 " + 
+					"except (SELECT doc_no from approval where TYPE=1 AND approval_order=2 AND approved=2) " + 
+					"except (SELECT doc_no from approval where TYPE=1 AND approval_order=3 AND approved=2))"
 					);
-			pstmt.setInt(1, empNo);
+			pstmt.setInt(1, teamCode);
+			pstmt.setInt(2, teamLeaderNo);
 			rs = pstmt.executeQuery();
 			while (rs.next() ) {
 				DocumentVO docVo = new DocumentVO();

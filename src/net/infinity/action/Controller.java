@@ -143,7 +143,10 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("documentReturnedReceived.do")) {
     		action = new ActionDocumentReturnedReceived();
     		af = action.execute(request, response);
-     	} 
+     	} else if (command.equals("documentReturnedReceivedToCEO.do")) {
+    		action = new ActionDocumentReturnedReceivedToCEO();
+    		af = action.execute(request, response);
+     	}  
     	
 
     	

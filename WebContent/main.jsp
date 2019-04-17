@@ -151,7 +151,7 @@ header{
 			<li class="list"><a href="documentPendingSendingToCEO.do" target="content">대기문서</a></li>
 			<li class="list"><a href="documentCompleteByCEO.do" target="content">완료문서</a></li>
 			<li class="list"><a href="documentRejectedByCEO.do" target="content">반려함</a></li>
-			<li class="list"><a href="" target="content">반송수신</a></li>
+			<li class="list"><a href="documentReturnedReceivedToCEO.do" target="content">반송수신</a></li>
 		</ul>
 		</li>
 		
@@ -190,13 +190,13 @@ header{
 		</li>
 	<li><a><b>반송함</b></a>
 		<ul>
-			<li class="list"><a href="documentReturnedPending.do" target="content">반송대기</a></li>
+			<li class="list"><a href="documentReturnedPending.do" target="content">반송진행</a></li>
 			<li class="list"><a href="documentReturnedConfirmed.do" target="content">반송완료</a></li>
 		</ul>
 		</li>
 	<li><a><b>반송수신함</b></a>
 		<ul>
-			<li class="list"><a href="" target="content">반송수신</a></li>
+			<li class="list"><a href="documentReturnedReceived.do" target="content">반송수신</a></li>
 		</ul>
 		</li>
 		<%} %>

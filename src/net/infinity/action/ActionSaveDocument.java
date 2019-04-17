@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import net.infinity.db.AttachDAO;
 import net.infinity.db.DocumentVO;

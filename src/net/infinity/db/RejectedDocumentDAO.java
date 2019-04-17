@@ -41,8 +41,13 @@ public class RejectedDocumentDAO {
 			}
 	}
 	
-	public List<RejectedDocumentVO> getRejectedDocument(int teamLeaderNo) {
+	public List<RejectedDocumentVO> getRejectedDocument(int empNo) {
 		List<RejectedDocumentVO> list = new ArrayList<RejectedDocumentVO>();
+		EmpDAO empDao = new EmpDAO();
+		int teamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(empNo);
+		EmpVO ceoVo = empDao.getCeoVO();
+		int teamCode = empDao.getTeamCodeFromEmpNo(empNo);
+		empDao.dbClose();
 
 		try {
 			pstmt = conn.prepareStatement(
@@ -69,11 +74,6 @@ public class RejectedDocumentDAO {
 			
 			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
-			
-			EmpDAO empDao = new EmpDAO();
-			EmpVO ceoVo = empDao.getCeoVO();
-			int teamCode = empDao.getTeamCodeFromEmpNo(teamLeaderNo);
-			empDao.dbClose();
 			
 			
 			pstmt = conn.prepareStatement(
@@ -261,16 +261,55 @@ public class RejectedDocumentDAO {
 		empDao.dbClose();
 
 		try {
+			//extract data from reviewer
 			pstmt = conn.prepareStatement(
-					"SELECT * FROM document a, " + 
-					"(SELECT * FROM approval WHERE TYPE=2 and approval_order=2 AND approved=2 AND doc_no IN "
-					+ "(SELECT doc_no FROM approval WHERE TYPE=1 AND team_code = ? AND approval_order=2 AND approved=1 AND doc_no IN "
-					+ "(SELECT doc_no FROM approval WHERE TYPE=2 AND approval_order=3 AND approved=2))) b " 
-					+ "WHERE a.doc_no=b.doc_no"
+					"SELECT * FROM document d, "
+					+ "(SELECT a.* FROM approval a, approval b WHERE a.team_code=b.team_code AND a.approval_order=2 "
+					+ "AND a.approved=2 AND b.approval_order=3 AND b.approved=2 AND a.doc_no=b.doc_no) c " 
+					+ "WHERE d.doc_no=c.doc_no AND d.doc_no LIKE ?"
 					);
-			pstmt.setInt(1, teamCode);
+			pstmt.setString(1, Integer.toString(teamCode) + "%");
 			rs = pstmt.executeQuery();
 					
+			while (rs.next()) {
+				RejectedDocumentVO rejDocVo = new RejectedDocumentVO();
+				rejDocVo.setDocNo(rs.getString("doc_no"));
+				rejDocVo.setEmpNo(rs.getInt("emp_no"));
+				rejDocVo.setTitle(rs.getString("title"));
+				rejDocVo.setContent(rs.getString("content"));
+				rejDocVo.setStartTime(rs.getTimestamp("start_time"));
+				rejDocVo.setSaveTime(rs.getTimestamp("save_time"));
+				rejDocVo.setRejectedDate(rs.getDate("approved_time"));
+				rejDocVo.setComment(rs.getString("comment"));
+				rejDocVo.setApprovalOrder(rs.getInt("approval_order"));
+				rejDocVo.setApprover(rs.getInt("approver"));
+				
+				list.add(rejDocVo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		
+		return list;
+	}
+	
+	
+	public List<RejectedDocumentVO> getDocumentReturnedReceivedToCEO() {
+		List<RejectedDocumentVO> list = new ArrayList<RejectedDocumentVO>();
+		
+		try {
+			pstmt = conn.prepareStatement(
+					//extract data from reviewer
+					"SELECT * FROM document a, " + 
+					"(SELECT * FROM approval WHERE type=2 and approval_order=2 AND approved=2 AND doc_no IN " + 
+					"(SELECT doc_no FROM approval WHERE type=1 AND approval_order=3 AND approved=1 AND doc_no IN " + 
+					"(SELECT doc_no FROM approval WHERE type=2 AND approval_order=3 AND approved=2))) b " + 
+					"WHERE a.doc_no=b.doc_no"
+					);
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				RejectedDocumentVO rejDocVo = new RejectedDocumentVO();
 				rejDocVo.setDocNo(rs.getString("doc_no"));

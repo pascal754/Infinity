@@ -19,7 +19,7 @@
 <%@ page import="net.infinity.db.EmpDAO" %>
 <%@ page import="net.infinity.db.EmpVO" %>
 <%@ page import="net.infinity.db.TeamDAO" %>
-
+<%@ page import="com.oreilly.servlet.MultipartRequest" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -28,14 +28,27 @@
 </head>
 <body>
 	<%
-		request.setCharacterEncoding("UTF-8");
-		String docNo = request.getParameter("doc_no");
-		String empNo = request.getParameter("emp_no");
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		String startTime = request.getParameter("startTime");
-		String approvalLine = request.getParameter("approvalLine");
-		String[] teams = request.getParameterValues("teams");
+	request.setCharacterEncoding("UTF-8");
+	MultipartRequest multi = null;	
+	int filesize=5*1024*1024;
+	String uploadPath = request.getServletContext().getRealPath("/Upload");
+	try{
+
+		multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8"); 
+
+		 }catch (Exception e) {
+
+			e.printStackTrace();
+
+		 } 
+		
+		String docNo = multi.getParameter("doc_no");
+		String empNo = multi.getParameter("emp_no");
+		String title = multi.getParameter("title");
+		String content = multi.getParameter("content");
+		String startTime = multi.getParameter("startTime");
+		String approvalLine = multi.getParameter("approvalLine");
+		String[] teams = multi.getParameterValues("teams");
 		//List<String> allTeams = (List<String>)request.get("allTeams");
 		//request.setAttribute("allTeams", allTeams);
 	

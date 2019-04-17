@@ -19,19 +19,18 @@
 	String id = (String)session.getAttribute("id");
 	
 	
+	
 	String docNo = request.getParameter("docNo");
-	String approver = request.getParameter("approver");
 
 	System.out.println("documentReturnedReceivedDetail.jsp");
-	System.out.println("docNo: " + docNo);
-	System.out.println("approver: " + approver);
+	System.out.println("doc no: " + docNo);
 	
 	
 	List<RejectedDocumentVO> list = (List<RejectedDocumentVO>)session.getAttribute("docList");
 	System.out.println("documentReturnedReceivedDetail.jsp list.size(): " + list.size());
 	RejectedDocumentVO rejDocVo = null;
 	for (RejectedDocumentVO x : list) {
-		if (x.getApprover() == Integer.parseInt(approver)) {
+		if (x.getDocNo().equals(docNo)) {
 			rejDocVo = x;
 			break;
 		}
@@ -78,6 +77,7 @@
 	AttachDAO attachDAO = new AttachDAO();
 	List<String> getfilename = attachDAO.getFilename((String)docVo.getDocNo());
 	attachDAO.dbClose();
+	
 %>
 <style>
             #doc_title {

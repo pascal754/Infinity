@@ -13,12 +13,11 @@
 	String docNo = (String)request.getAttribute("docNo");
 %>
 	<form action="returnDocumentByTeamMemberConfirmed.do" method="POST">
-		반려사유<br>
+		반송사유<br>
 		<textarea rows="4" cols="50" name="comment"></textarea><br>
 		<input type="hidden" name="docNo" value="<%=docNo %>">
 		<input type="hidden" name="id" value="<%=id %>">
 		<input type="submit" value="반송">
-		<input type="submit" value="반려">
 		<button type="submit" formaction="documentPendingReceivingToTeamMember.do">취소</button>
 	</form>
 </body>

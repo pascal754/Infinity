@@ -256,6 +256,30 @@ public class ApprovalDAO {
 				listByCEO.add(docVo);
 			}
 			
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+			
+			pstmt = conn.prepareStatement(
+					"select * from document where doc_no in "
+					+ "(select doc_no from approval where doc_no in "
+					+ "(select doc_no from approval where approver = ? and approval_order=1 and approved=1 and type=1) "
+					+ "and approver = ? and approval_order=3 and approved=2 and type=1);"
+					);
+			pstmt.setInt(1, empNo);
+			pstmt.setInt(2, ceoNo);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				DocumentVO docVo = new DocumentVO();
+				docVo.setDocNo(rs.getString("doc_no"));
+				docVo.setEmpNo(rs.getInt("emp_no"));
+				docVo.setTitle(rs.getString("title"));
+				docVo.setContent(rs.getString("content"));
+				docVo.setStartTime(rs.getTimestamp("start_time"));
+				docVo.setSaveTime(rs.getTimestamp("save_time"));
+				listByCEO.add(docVo);
+			}
+			
+			
 			for (DocumentVO x : listByCEO)
 				for (int i = 0; i < listByTeamLeader.size(); ++i)
 					if (listByTeamLeader.get(i).getDocNo().equals(x.getDocNo())) {
@@ -276,12 +300,17 @@ public class ApprovalDAO {
 	public List<DocumentVO> getCompleteByTeamLeader(int teamLeaderNo) {
 		List<DocumentVO> listByTeamLeader = new ArrayList<DocumentVO>();
 		List<DocumentVO> listByCEO = new ArrayList<DocumentVO>();
+		EmpDAO empDao = new EmpDAO();
+		int teamCode = empDao.getTeamCodeFromEmpNo(teamLeaderNo);
+		empDao.dbClose();
+		
 		try {
 			pstmt = conn.prepareStatement(
 					"select * from document where doc_no in "
-					+ "(select doc_no from approval where approver = ? and approved = 1 and type=1)"
+					+ "(select doc_no from approval where approver = ? and team_code = ? and approval_order=2 and approved=1 and type=1)"
 					);
 			pstmt.setInt(1, teamLeaderNo);
+			pstmt.setInt(2, teamCode);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				DocumentVO docVo = new DocumentVO();
@@ -300,8 +329,8 @@ public class ApprovalDAO {
 			pstmt = conn.prepareStatement(
 					"select * from document where doc_no in "
 					+ "(select doc_no from approval where doc_no in "
-					+ "(select doc_no from approval where approver = ? and approved = 1 and type=1) "
-					+ "and approval_order=3 and approved=0)");
+					+ "(select doc_no from approval where approver = ? and approval_order=2 and approved=1 and type=1) "
+					+ "and approval_order=3 and approved=0 and type=1)");
 			pstmt.setInt(1, teamLeaderNo);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -322,8 +351,8 @@ public class ApprovalDAO {
 			pstmt = conn.prepareStatement(
 					"select * from document where doc_no in "
 					+ "(select doc_no from approval where doc_no in "
-					+ "(select doc_no from approval where approver = ? and approved = 1 and type=1) "
-					+ "and approval_order=3 and approved=2)");
+					+ "(select doc_no from approval where approver = ? and approval_order=2 and approved=1 and type=1) "
+					+ "and approval_order=3 and approved=2 and type=1)");
 			pstmt.setInt(1, teamLeaderNo);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -361,7 +390,7 @@ public class ApprovalDAO {
 		try {
 			pstmt = conn.prepareStatement(
 					"select approved_time from approval where approval_order=(select max(approval_order) "
-					+ "from approval where doc_no = ?) and doc_no = ? and approved=1");
+					+ "from approval where type=1 and doc_no = ?) and doc_no = ? and approved=1 and type=1");
 			pstmt.setString(1, docNo);
 			pstmt.setString(2, docNo);
 			rs = pstmt.executeQuery();

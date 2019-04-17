@@ -22,6 +22,10 @@
 	String docNo = request.getParameter("docNo");
 	System.out.println("doc no: " + docNo);
 	
+	DocumentDAO docDao = new DocumentDAO();
+	DocumentVO docVo = docDao.getDraftDocument(docNo);
+	docDao.dbClose();
+	
 	List<RejectedDocumentVO> list = (List<RejectedDocumentVO>)session.getAttribute("docList");
 	System.out.println("documentRejectedDetail.jsp list.size(): " + list.size());
 	RejectedDocumentVO rejDocVo = null;
@@ -71,6 +75,10 @@
 	}
 	empDao.dbClose();	
 	appDao.dbClose();
+	
+	AttachDAO attachDAO = new AttachDAO();
+	List<String> getfilename = attachDAO.getFilename((String)docVo.getDocNo());
+	attachDAO.dbClose();
 %>
 <style>
             #doc_title {
@@ -218,7 +226,10 @@
                     <td class="e">첨부</td>
                 </tr>
                 <tr class="c">
-                    <td class="e">&nbsp;</td>
+                    <td class="e"><%for(String filenames : getfilename){
+                	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><br>");
+                  }%>
+                  </td>
                 </tr>
             </table>
             
