@@ -34,14 +34,7 @@ left:1820px;
 
 }
 
-#nav_menu3{
-list-style-type:none;
-padding-left:0px;
-position:fixed;
-top:20px;
-left:1500px;
 
-}
 
 #nav_menu ul li {
 display:inline;
