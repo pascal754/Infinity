@@ -64,7 +64,7 @@ public class AttachDAO {
 			pstmt = conn.prepareStatement("DELETE FROM attach WHERE doc_no = ?");
 			pstmt.setString(1,  doc_no);
 			pstmt.executeUpdate();
-			System.out.println("颇老昏力");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -78,7 +78,7 @@ public void FileNameDelete(String filename) {
 			pstmt = conn.prepareStatement("DELETE FROM attach WHERE filename = ?");
 			pstmt.setString(1,  filename);
 			pstmt.executeUpdate();
-			System.out.println("颇老昏力");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
