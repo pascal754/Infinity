@@ -16,10 +16,31 @@ ul{list-style:none;}
 ul li ul li:hover{background-color:#D4F4FA;}
 a { text-decoration:none; color:#000000;}
 
-#nav_menu ul {
+#nav_menu1 {
 list-style-type:none;
 padding-left:0px;
-text-align:center;
+position:relative;
+top:54px;
+left:175px;
+
+}
+
+#nav_menu2{
+list-style-type:none;
+padding-left:0px;
+position:fixed;
+top:5px;
+left:1820px;
+
+}
+
+#nav_menu3{
+list-style-type:none;
+padding-left:0px;
+position:fixed;
+top:20px;
+left:1500px;
+
 }
 
 #nav_menu ul li {
@@ -44,6 +65,7 @@ header{
 	text-align:center;
 	font-size:25px;
 	
+	
 }
 
 
@@ -64,36 +86,40 @@ header{
 
 <body>
 	
-<%
-	String name = (String)session.getAttribute("name");
-	String id = (String)session.getAttribute("id");
-	int title_code = (int)session.getAttribute("title_code");
-	EmpDAO empDao = new EmpDAO();
-	String teamName = empDao.getTeamName(Integer.parseInt(id));
-	String title = empDao.getTitle(Integer.parseInt(id));
-	empDao.dbClose();
-%>
-	Welcome
-	&nbsp;
-	<%=teamName %>
-	&nbsp;	
-	<%=name %>
-	&nbsp;
-	<%=title %>
-
-	<%if (name.equals("momo")) {
-		response.sendRedirect("adminPage.jsp");
-	}%>
-
-<br><br>
+	
+		<%
+			String name = (String)session.getAttribute("name");
+			String id = (String)session.getAttribute("id");
+			int title_code = (int)session.getAttribute("title_code");
+			EmpDAO empDao = new EmpDAO();
+			String teamName = empDao.getTeamName(Integer.parseInt(id));
+			String title = empDao.getTitle(Integer.parseInt(id));
+			empDao.dbClose();
+		%>
+			Welcome
+			&nbsp;
+			<%=teamName %>
+			&nbsp;	
+			<%=name %>
+			&nbsp;
+			<%=title %>
+		
+			<%if (name.equals("momo")) {
+				response.sendRedirect("adminPage.jsp");
+			}%>
+	
+<br> 
 
 <div id="nav_menu">
 
-<ul>
+<ul id="nav_menu1">
 	<%if(title_code==1){ %>
 	<li><a href="approvalLine.jsp" target="content">결재문서 작성</a></li>
 	<%} %>
-	<li><a href="logoutProcess.jsp">Logout</a></li>
+</ul>	
+
+<ul id="nav_menu2">
+	<a href="logoutProcess.jsp"><strong>Logout</strong></a>
 </ul>
 </div>
 
