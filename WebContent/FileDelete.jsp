@@ -11,8 +11,9 @@
 <body>
 <%	
 	String fileName = request.getParameter("fileName");
+	String folderName = request.getParameter("docNo");
 	ServletContext context = getServletContext();
-	String downloadPath = context.getRealPath("Upload");
+	String downloadPath = context.getRealPath("Upload/"+folderName);
 	String filePath = downloadPath + "/" + fileName;
 	File file = new File(filePath);
 	

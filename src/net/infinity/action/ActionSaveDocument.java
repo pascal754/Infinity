@@ -1,5 +1,6 @@
 package net.infinity.action;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import net.infinity.db.AttachDAO;
 import net.infinity.db.DocumentVO;
@@ -28,14 +30,18 @@ public class ActionSaveDocument implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		
 		request.setCharacterEncoding("UTF-8");
+		String folderName=request.getParameter("foldername");
 		MultipartRequest multi = null;	
 		int filesize=5*1024*1024;
-		String uploadPath = request.getServletContext().getRealPath("/Upload");
+		String uploadPath = request.getServletContext().getRealPath("/Upload/"+folderName);
+		File Path= new File(uploadPath);
+		if(!Path.exists()) {
+			Path.mkdirs();
+		}
 		try{
 
-			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8"); 
+			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8", new DefaultFileRenamePolicy()); 
 
 			 }catch (Exception e) {
 

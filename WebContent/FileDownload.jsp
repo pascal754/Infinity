@@ -13,10 +13,11 @@
 
 <%	
 	String fileName = request.getParameter("fileName");
+	String folderName = request.getParameter("docNo");
 	System.out.println(fileName);
 	// 다운로드 할 파일의 경로를 구하고 File 객체 생성
 	ServletContext context = getServletContext();
-	String downloadPath = context.getRealPath("Upload");
+	String downloadPath = context.getRealPath("Upload/"+folderName);
 	String filePath = downloadPath + "/" + fileName;
 	File file = new File(filePath);
 
