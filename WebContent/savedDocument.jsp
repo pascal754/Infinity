@@ -9,7 +9,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="net.infinity.db.*" %>
-<%@ page import="java.net.*"%>
+<%@ page import="java.net.URLEncoder"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	String name = (String)session.getAttribute("name");
