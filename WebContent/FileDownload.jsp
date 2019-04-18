@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="java.io.File" %><%@page import="java.net.*"%>
-    <%@page import="java.io.FileInputStream"%>
-
+    <%@ page import="java.io.File" %>
+    <%@ page import="java.io.FileInputStream"%>
+	<%@ page import="java.net.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,9 +10,10 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <%	
 	String fileName = request.getParameter("fileName");
-
+	System.out.println(fileName);
 	// 다운로드 할 파일의 경로를 구하고 File 객체 생성
 	ServletContext context = getServletContext();
 	String downloadPath = context.getRealPath("Upload");
@@ -26,14 +27,18 @@
 	response.setContentType(mimeType);
 
 	// 다운로드 설정 및 한글 파일명 깨지는 것 방지
-	String downloadName = null;
-	if(request.getHeader("user-agent").indexOf("MSIE") != -1){
-		downloadName = new String(fileName.getBytes("utf-8"), "8859_1");
+	
+	String downloadName = "";
+	if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")){
+			downloadName =  URLEncoder.encode(fileName, "utf-8").replaceAll("\\+","%20");
+			response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
+			System.out.println(downloadName);
 	}else{
 		downloadName = new String(fileName.getBytes("utf-8"), "8859_1");
+		response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
+		System.out.println(downloadName);
 	}
-	response.setHeader("Content-Disposition", "attachment; filename=\""
-						+ downloadName+"\";");
+	
 	// 요청 파일을 읽어서 클라이언트에 전송
 	FileInputStream in = new FileInputStream(file);
 	ServletOutputStream outStream = response.getOutputStream();
