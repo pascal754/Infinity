@@ -29,7 +29,7 @@
 	// 다운로드 설정 및 한글 파일명 깨지는 것 방지
 	
 	String downloadName = "";
-	if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")){
+	if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")||request.getHeader("user-Agent").contains("Edge")){
 			downloadName =  URLEncoder.encode(fileName, "utf-8").replaceAll("\\+","%20");
 			System.out.println(downloadName);
 	}else{

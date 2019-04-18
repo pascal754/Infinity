@@ -26,11 +26,10 @@
 		String downloadPath = context.getRealPath("Upload");
 		String filePath = downloadPath + "/" + fileName;
 		File file = new File(filePath);
-		
 		file.delete();
+		attachDAO.FileNameDelete(filenames);
 	}
 	
-	attachDAO.FileDelete(docNo);
 	attachDAO.dbClose();
 	
 	response.sendRedirect("draft.jsp");
