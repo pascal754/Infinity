@@ -31,7 +31,7 @@
 			<th>제목</th>
 			<th>내용</th>
 			<th>작성자</th>
-			<th>상신일</th>
+			<th>발신일</th>
 			<th>반송일</th>
 		</tr>
 		<%
@@ -40,7 +40,7 @@
 			for (RejectedDocumentVO x : list) {
 				out.println("<tr><td><a href=\"documentReturnedConfirmedDetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
 					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>" + empDao.getEmpName(x.getEmpNo()) + "</td><td>"
-					+ appDao.getApprovedDate(x.getDocNo(), x.getEmpNo()) + "</td><td>"
+					+ appDao.getFinalApprovedDate(x.getDocNo()) + "</td><td>"
 					+ x.getRejectedDate()
 					+ "</td></tr>"
 				);
