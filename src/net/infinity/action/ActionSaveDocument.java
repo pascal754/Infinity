@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import net.infinity.db.AttachDAO;
 import net.infinity.db.DocumentVO;
@@ -41,7 +40,7 @@ public class ActionSaveDocument implements Action {
 		}
 		try{
 
-			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8", new DefaultFileRenamePolicy()); 
+			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8"); 
 
 			 }catch (Exception e) {
 

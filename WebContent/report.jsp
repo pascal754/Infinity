@@ -21,7 +21,6 @@
 <%@ page import="net.infinity.db.EmpVO" %>
 <%@ page import="net.infinity.db.TeamDAO" %>
 <%@ page import="com.oreilly.servlet.MultipartRequest" %>
-<%@ page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy" %>
 <%@ page import="java.io.File" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -43,7 +42,7 @@
 	
 	try{
 
-		multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8" ,new DefaultFileRenamePolicy()); 
+		multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8"); 
 
 		 }catch (Exception e) {
 
