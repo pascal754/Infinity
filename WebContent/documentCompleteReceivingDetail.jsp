@@ -214,9 +214,9 @@
                     <td class="e"><%for(String filenames : getfilename){
                   		if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")){
                   			String filenamess = URLEncoder.encode(filenames, "utf-8").replaceAll("\\+","%20");
-                  			out.println("<a href='FileDownload.jsp?fileName="+filenamess+"&docNo="+docVo.getDocNo()+"'>"+filenames+"</a><button type='submit' formaction='FileDelete.jsp?fileName="+filenamess+"&docNo="+docVo.getDocNo()+"'>삭제</button><br>");
+                  			out.println("<a href='FileDownload.jsp?fileName="+filenamess+"&docNo="+docVo.getDocNo()+"'>"+filenames+"</a><br>");
                   		}else{
-                			out.println("<a href='FileDownload.jsp?fileName="+filenames+"&docNo="+docVo.getDocNo()+"'>"+filenames+"</a><button type='submit' formaction='FileDelete.jsp?fileName="+filenames+"&docNo="+docVo.getDocNo()+"'>삭제</button><br>");
+                			out.println("<a href='FileDownload.jsp?fileName="+filenames+"&docNo="+docVo.getDocNo()+"'>"+filenames+"</a><br>");
                   		}
                   	}%>
                   </td>
