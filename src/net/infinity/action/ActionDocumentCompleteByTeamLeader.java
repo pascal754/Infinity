@@ -24,7 +24,7 @@ public class ActionDocumentCompleteByTeamLeader implements Action {
 		int teamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(Integer.parseInt(id));
 		empDao.dbClose();
 		DocumentDAO docDao = new DocumentDAO();
-		List<DocumentVO> list = docDao.getCompleteByTeamLeader(teamLeaderNo);
+		List<DocumentVO> list = docDao.getDocumentCompleteByTeamLeader(teamLeaderNo);
 		docDao.dbClose();
 		
 		request.setAttribute("docList", list);

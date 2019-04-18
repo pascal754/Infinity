@@ -148,9 +148,13 @@
                 <table class="t">
                     <tr class="t">
                         <td class="t">작성자<br><%=empVo.getName() %><br><%=approvedDate %></td>
-                        <td class="t">팀장<br><%=teamLeaderVo.getName() %><br><%= appLine==2 ? rejDocVo.getRejectedDate() : approvedDateTeamLeader%> </td>
+                        <td class="t">팀장<br><%=teamLeaderVo.getName() %><br>
+                        	<%= rejDocVo.getApprover() == teamLeaderVo.getEmpNo() ? rejDocVo.getRejectedDate() : approvedDateTeamLeader %>
+                        </td>
                         <%if (approvalLine.equals("ceo")) {%>
-                        <td class="t">사장<br><%=ceoVo.getName() %><br><%=rejDocVo.getRejectedDate() %></td>
+                        <td class="t">사장<br><%=ceoVo.getName() %><br>
+                        	<%= rejDocVo.getApprover() == ceoVo.getEmpNo() ? rejDocVo.getRejectedDate() : " / / " %>
+                        </td>
                         <%}%>
                     </tr>
                 </table>

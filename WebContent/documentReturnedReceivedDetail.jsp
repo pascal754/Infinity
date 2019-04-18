@@ -74,7 +74,6 @@
 
 	
 	int receiverTeamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(Integer.parseInt(id));
-	empDao.dbClose();
 	
 	AttachDAO attachDAO = new AttachDAO();
 	List<String> getfilename = attachDAO.getFilename((String)docVo.getDocNo());
@@ -231,7 +230,12 @@
                     <td class="e">반송사유</td>
                 </tr>
                 <tr class="c">
-                    <td class="e"><textarea name="content" id="content" required cols="80" rows="5" readonly><%=rejDocVo.getComment() %></textarea></td>
+                    <td class="e"><textarea name="content" id="content" required cols="80" rows="5" readonly>
+                    		<%
+                    			out.print(empDao.getTeamName(rejDocVo.getApprover()) + "\n" + rejDocVo.getComment());
+                    			empDao.dbClose();
+                    		%>
+                    	</textarea></td>
                 </tr>
             </table>
             <br>

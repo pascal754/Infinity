@@ -30,6 +30,7 @@
 			<th>문서 번호</th>
 			<th>제목</th>
 			<th>내용</th>
+			<th>발신팀</th>
 			<th>작성자</th>
 			<th>발신일</th>
 			<th>반송일</th>
@@ -39,7 +40,9 @@
 			EmpDAO empDao = new EmpDAO();
 			for (RejectedDocumentVO x : list) {
 				out.println("<tr><td><a href=\"documentReturnedConfirmedDetail.jsp?docNo=" + x.getDocNo() + "\">" + x.getDocNo()+ "</a></td><td>"
-					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>" + empDao.getEmpName(x.getEmpNo()) + "</td><td>"
+					+ x.getTitle() + "</td><td>" + StringUtils.left(x.getContent(), 20) + "</td><td>"
+					+ empDao.getTeamName(x.getEmpNo()) + "</td><td>"
+					+ empDao.getEmpName(x.getEmpNo()) + "</td><td>"
 					+ appDao.getFinalApprovedDate(x.getDocNo()) + "</td><td>"
 					+ x.getRejectedDate()
 					+ "</td></tr>"

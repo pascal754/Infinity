@@ -273,10 +273,10 @@
 		//SaveDocument sd = new SaveDocument();
 		//sd.save(request, response);
 		
-		DocumentDAO docDao = new DocumentDAO();
+		ApprovalDAO appDao = new ApprovalDAO();
 		//String docNo = (String)request.getParameter("docNo");
-		docDao.reportToTeamLeader(docNo);
-		docDao.dbClose();
+		appDao.reportToTeamLeader(docNo);
+		appDao.dbClose();
 		System.out.println("docNo: " + docNo);
 		response.sendRedirect("draft.jsp");
 	%>

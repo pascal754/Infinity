@@ -576,6 +576,64 @@ public class ApprovalDAO {
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
 		}
 	}
+	
+	
+	public void reportToTeamLeader(String docNo) {
+		try {
+			pstmt = conn.prepareStatement("update approval set approved = 1, approved_time = now()" + 
+				"where doc_no = ? and type = 1 and approval_order = 1");
+			pstmt.setString(1, docNo);
+			if (pstmt.executeUpdate() == 1)
+				System.out.println("reportToTeamLeader succeeded");
+			else
+				System.out.println("reportToTeamLeader failed");
+		} catch (SQLException e ) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+	}
+	
+	
+	public void reportToCEO(String docNo) {
+		try {
+			pstmt = conn.prepareStatement("update approval set approved = 1, approved_time = now()" + 
+				"where doc_no = ? and type = 1 and approval_order = 2");
+			pstmt.setString(1, docNo);
+			if (pstmt.executeUpdate() == 1)
+				System.out.println("reportToCEO succeeded");
+			else
+				System.out.println("reportToCEO failed");
+		} catch (SQLException e ) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+	}
+	
+	public boolean getFinalSenderApprovalStatus(String docNo) {
+		int status = 0;
+		try {
+			pstmt = conn.prepareStatement("select approved from approval "
+					+ "where approval_order=(select max(approval_order) from approval where doc_no = ?)"
+					+ " and doc_no = ?;"
+					);
+			pstmt.setString(1, docNo);
+			pstmt.setString(2, docNo);
+			rs = pstmt.executeQuery();
+			if (rs.next() ) {
+				status = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
+			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
+		}
+		return  (status == 0) ? false : true;
+	}
 
 }
 

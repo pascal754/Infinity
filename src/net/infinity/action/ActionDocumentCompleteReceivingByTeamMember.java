@@ -21,7 +21,7 @@ public class ActionDocumentCompleteReceivingByTeamMember implements Action {
 		String id = (String)mySession.getAttribute("id");
 		
 		DocumentDAO docDao = new DocumentDAO();
-		List<DocumentVO> list = docDao.getCompleteReceivingByTeamMember(Integer.parseInt(id));
+		List<DocumentVO> list = docDao.getDocumentCompleteReceivingByTeamMember(Integer.parseInt(id));
 		docDao.dbClose();
 		
 		request.setAttribute("docList", list);

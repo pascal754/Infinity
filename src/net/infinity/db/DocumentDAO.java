@@ -147,42 +147,6 @@ public class DocumentDAO {
 		return docVo;
 	}
 	
-
-	public void reportToTeamLeader(String docNo) {
-		try {
-			pstmt = conn.prepareStatement("update approval set approved = 1, approved_time = now()" + 
-				"where doc_no = ? and type = 1 and approval_order = 1");
-			pstmt.setString(1, docNo);
-			if (pstmt.executeUpdate() == 1)
-				System.out.println("reportToTeamLeader succeeded");
-			else
-				System.out.println("reportToTeamLeader failed");
-		} catch (SQLException e ) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
-			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
-		}
-	}
-	
-	
-	public void reportToCEO(String docNo) {
-		try {
-			pstmt = conn.prepareStatement("update approval set approved = 1, approved_time = now()" + 
-				"where doc_no = ? and type = 1 and approval_order = 2");
-			pstmt.setString(1, docNo);
-			if (pstmt.executeUpdate() == 1)
-				System.out.println("reportToCEO succeeded");
-			else
-				System.out.println("reportToCEO failed");
-		} catch (SQLException e ) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
-			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
-		}
-	}
-	
 	
 	public List<DocumentVO> getDocumentPendingSendingToTeamLeader(int teamLeaderNo) {
 		List<DocumentVO> list = new ArrayList<DocumentVO>();
@@ -217,7 +181,7 @@ public class DocumentDAO {
 	}
 	
 	
-	public List<DocumentVO> getPendingSendingToCEO(int empNo) {
+	public List<DocumentVO> getDocumentPendingSendingToCEO(int empNo) {
 		List<DocumentVO> list = new ArrayList<DocumentVO>();
 		try {
 			pstmt = conn.prepareStatement("select * from document where doc_no in"
@@ -276,7 +240,7 @@ public class DocumentDAO {
 	
 	public List<DocumentVO> getDocumentPendingReceiving(int empNo) {
 		List<DocumentVO> list = new ArrayList<DocumentVO>();
-		DocumentDAO docDao = new DocumentDAO();
+		ApprovalDAO appDao = new ApprovalDAO();
 		EmpDAO empDao = new EmpDAO();
 		int teamCode = empDao.getTeamCodeFromEmpNo(empNo);
 		int teamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(empNo);
@@ -301,7 +265,7 @@ public class DocumentDAO {
 				docVo.setStartTime(rs.getTimestamp("start_time"));
 				docVo.setSaveTime(rs.getTimestamp("save_time"));
 				
-				if (docDao.getFinalSenderApprovalStatus(docVo.getDocNo()))
+				if (appDao.getFinalSenderApprovalStatus(docVo.getDocNo()))
 					list.add(docVo);
 			}
 		} catch (SQLException e) {
@@ -310,34 +274,12 @@ public class DocumentDAO {
 			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
 			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
 		}
-		docDao.dbClose();
+		appDao.dbClose();
 		System.out.println("DocumentDAO::getDocumentPendingReceiving executed");		
 		return list;
 	}
 	
-	public boolean getFinalSenderApprovalStatus(String docNo) {
-		int status = 0;
-		try {
-			pstmt = conn.prepareStatement("select approved from approval "
-					+ "where approval_order=(select max(approval_order) from approval where doc_no = ?)"
-					+ " and doc_no = ?;"
-					);
-			pstmt.setString(1, docNo);
-			pstmt.setString(2, docNo);
-			rs = pstmt.executeQuery();
-			if (rs.next() ) {
-				status = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) try { rs.close();} catch (Exception e) {e.printStackTrace();}
-			if (pstmt != null) try { pstmt.close(); } catch (Exception e) {e.printStackTrace();}
-		}
-		return  (status == 0) ? false : true;
-	}
-	
-	public List<DocumentVO> getCompleteReceivingByTeamMember(int empNo) {
+	public List<DocumentVO> getDocumentCompleteReceivingByTeamMember(int empNo) {
 		List<DocumentVO> list = new ArrayList<DocumentVO>();
 		try {
 			pstmt = conn.prepareStatement("select * from document where doc_no in "
@@ -509,7 +451,7 @@ public class DocumentDAO {
 	}
 
 	
-	public List<DocumentVO> getCompleteByTeamMember(int empNo) {
+	public List<DocumentVO> getDocumentCompleteByTeamMember(int empNo) {
 		List<DocumentVO> listByTeamLeader = new ArrayList<DocumentVO>();
 		List<DocumentVO> listByCEO = new ArrayList<DocumentVO>();
 		EmpDAO empDao = new EmpDAO();
@@ -602,7 +544,7 @@ public class DocumentDAO {
 		return listByTeamLeader;
 	}
 	
-	public List<DocumentVO> getCompleteByTeamLeader(int teamLeaderNo) {
+	public List<DocumentVO> getDocumentCompleteByTeamLeader(int teamLeaderNo) {
 		List<DocumentVO> listByTeamLeader = new ArrayList<DocumentVO>();
 		List<DocumentVO> listByCEO = new ArrayList<DocumentVO>();
 		EmpDAO empDao = new EmpDAO();

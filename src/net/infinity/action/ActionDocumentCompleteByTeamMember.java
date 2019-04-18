@@ -19,7 +19,7 @@ public class ActionDocumentCompleteByTeamMember implements Action {
 
 		String id = (String)mySession.getAttribute("id");
 		DocumentDAO docDao = new DocumentDAO();
-		List<DocumentVO> list = docDao.getCompleteByTeamMember(Integer.parseInt(id));
+		List<DocumentVO> list = docDao.getDocumentCompleteByTeamMember(Integer.parseInt(id));
 		docDao.dbClose();
 		
 		request.setAttribute("docList", list);

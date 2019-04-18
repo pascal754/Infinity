@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.infinity.db.DocumentDAO;
+import net.infinity.db.ApprovalDAO;
 
 public class ActionReportToCEO implements Action {
 
@@ -15,9 +15,9 @@ public class ActionReportToCEO implements Action {
 			throws ServletException, IOException {
 		
 		String docNo = (String)request.getParameter("doc_no");
-		DocumentDAO docDao = new DocumentDAO();
-		docDao.reportToCEO(docNo);
-		docDao.dbClose();
+		ApprovalDAO appDao = new ApprovalDAO();
+		appDao.reportToCEO(docNo);
+		appDao.dbClose();
 		System.out.println("ActionReportToCEO docNo: " + docNo);
 
 		
