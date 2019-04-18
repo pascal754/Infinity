@@ -21,7 +21,7 @@ list-style-type:none;
 padding-left:0px;
 position:relative;
 top:54px;
-left:175px;
+left:15%;
 
 }
 
@@ -114,7 +114,7 @@ header{
 
 <ul id="nav_menu1">
 	<%if(title_code==1){ %>
-	<li><a href="approvalLine.jsp" target="content">결재문서 작성</a></li>
+	<li><a href="approvalLine.jsp" target="content"><b>결재문서 작성</b></a></li><br><br>
 	<%} %>
 </ul>	
 
