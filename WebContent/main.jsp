@@ -30,7 +30,7 @@ list-style-type:none;
 padding-left:0px;
 position:fixed;
 top:5px;
-left:1820px;
+right:10%;
 
 }
 
@@ -119,7 +119,7 @@ header{
 </ul>	
 
 <ul id="nav_menu2">
-	<a href="logoutProcess.jsp"><strong>Logout</strong></a>
+	<a href="logoutProcess.jsp"><strong><h3>Logout</h3></strong></a>
 </ul>
 </div>
 
