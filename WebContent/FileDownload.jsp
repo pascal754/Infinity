@@ -13,10 +13,11 @@
 
 <%	
 	String fileName = request.getParameter("fileName");
+	String folderName = request.getParameter("docNo");
 	System.out.println(fileName);
 	// 다운로드 할 파일의 경로를 구하고 File 객체 생성
 	ServletContext context = getServletContext();
-	String downloadPath = context.getRealPath("Upload");
+	String downloadPath = context.getRealPath("Upload/"+folderName);
 	String filePath = downloadPath + "/" + fileName;
 	File file = new File(filePath);
 
@@ -29,15 +30,18 @@
 	// 다운로드 설정 및 한글 파일명 깨지는 것 방지
 	
 	String downloadName = "";
-	if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")){
+	if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")||request.getHeader("user-Agent").contains("Edge")){
 			downloadName =  URLEncoder.encode(fileName, "utf-8").replaceAll("\\+","%20");
-			response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
 			System.out.println(downloadName);
 	}else{
 		downloadName = new String(fileName.getBytes("utf-8"), "8859_1");
-		response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
 		System.out.println(downloadName);
 	}
+
+	response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
+	
+	out.clear();
+	out=pageContext.pushBody();
 	
 	// 요청 파일을 읽어서 클라이언트에 전송
 	FileInputStream in = new FileInputStream(file);

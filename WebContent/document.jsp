@@ -198,7 +198,7 @@
 	    })
 	})
 </script>
-<form action="saveDocument.do" id="document" method="post" enctype="multipart/form-data">
+<form action="saveDocument.do?foldername=<%=documentNo %>" id="document" method="post" enctype="multipart/form-data">
 <div id ="doc_title">
                 <p class="t">결재문서</p>
             </div>

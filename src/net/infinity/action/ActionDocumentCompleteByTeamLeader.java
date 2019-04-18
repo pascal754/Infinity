@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.infinity.db.ApprovalDAO;
+import net.infinity.db.DocumentDAO;
 import net.infinity.db.DocumentVO;
 import net.infinity.db.EmpDAO;
 
@@ -23,9 +23,9 @@ public class ActionDocumentCompleteByTeamLeader implements Action {
 		EmpDAO empDao = new EmpDAO();
 		int teamLeaderNo = empDao.getTeamLeaderNoFromEmpNo(Integer.parseInt(id));
 		empDao.dbClose();
-		ApprovalDAO appDao = new ApprovalDAO();
-		List<DocumentVO> list = appDao.getCompleteByTeamLeader(teamLeaderNo);
-		appDao.dbClose();
+		DocumentDAO docDao = new DocumentDAO();
+		List<DocumentVO> list = docDao.getCompleteByTeamLeader(teamLeaderNo);
+		docDao.dbClose();
 		
 		request.setAttribute("docList", list);
 		

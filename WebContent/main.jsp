@@ -21,8 +21,7 @@ list-style-type:none;
 padding-left:0px;
 position:relative;
 top:54px;
-left:175px;
-text-decoration: underline;
+left:15%;
 
 }
 
@@ -31,7 +30,7 @@ list-style-type:none;
 padding-left:0px;
 position:fixed;
 top:5px;
-left:1820px;
+right:10%;
 
 }
 
@@ -97,7 +96,9 @@ header{
 			<%=name %>
 			&nbsp;
 			<%=title %>
-		
+			&nbsp;
+			<a href="passwordReset.jsp" target="content">비밀번호 변경</a>
+			
 			<%if (name.equals("momo")) {
 				response.sendRedirect("adminPage.jsp");
 			}%>
@@ -108,12 +109,14 @@ header{
 
 <ul id="nav_menu1">
 	<%if(title_code==1){ %>
-	<li><a href="approvalLine.jsp" target="content"><strong>결재문서 작성</strong></a></li>
+
+	<li><a href="approvalLine.jsp" target="content"><b>결재문서 작성</b></a></li><br><br>
+
 	<%} %>
 </ul>	
 
 <ul id="nav_menu2">
-	<a href="logoutProcess.jsp"><strong>Logout</strong></a>
+	<a href="logoutProcess.jsp"><strong><h3>Logout</h3></strong></a>
 </ul>
 </div>
 

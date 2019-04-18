@@ -146,6 +146,9 @@ public class Controller extends HttpServlet {
      	} else if (command.equals("documentReturnedReceivedToCEO.do")) {
     		action = new ActionDocumentReturnedReceivedToCEO();
     		af = action.execute(request, response);
+     	} else if (command.equals("PersonalpasswordReset.do")) {
+    		action = new PersonalPasswordReset();
+    		af = action.execute(request, response);
      	}  
     	
 

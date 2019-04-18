@@ -9,6 +9,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="net.infinity.db.*" %>
+<%@ page import="java.net.URLEncoder"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -227,8 +228,13 @@
                 </tr>
                 <tr class="c">
                     <td class="e"><%for(String filenames : getfilename){
-                	 out.println("<a href='FileDownload.jsp?fileName="+filenames+"'>"+filenames+"</a><br>");
-                  }%>
+                  		if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")){
+                  			String filenamess = URLEncoder.encode(filenames, "utf-8").replaceAll("\\+","%20");
+                  			out.println("<a href='FileDownload.jsp?fileName="+filenamess+"&docNo="+docVo.getDocNo()+"'>"+filenames+"</a><button type='submit' formaction='FileDelete.jsp?fileName="+filenamess+"&docNo="+docVo.getDocNo()+"'>삭제</button><br>");
+                  		}else{
+                			out.println("<a href='FileDownload.jsp?fileName="+filenames+"&docNo="+docVo.getDocNo()+"'>"+filenames+"</a><button type='submit' formaction='FileDelete.jsp?fileName="+filenames+"&docNo="+docVo.getDocNo()+"'>삭제</button><br>");
+                  		}
+                  	}%>
                   </td>
                 </tr>
             </table>

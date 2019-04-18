@@ -20,18 +20,21 @@
 	AttachDAO attachDAO = new AttachDAO();
 	List<String> getfilename = attachDAO.getFilename(docNo);
 	
+	ServletContext context = getServletContext();
+	String downloadPath = context.getRealPath("Upload/"+docNo);
+	
 	for(String filenames : getfilename){
 		String fileName = filenames;
-		ServletContext context = getServletContext();
-		String downloadPath = context.getRealPath("Upload");
 		String filePath = downloadPath + "/" + fileName;
 		File file = new File(filePath);
-		
 		file.delete();
+		attachDAO.FileNameDelete(filenames);
 	}
-	
-	attachDAO.FileDelete(docNo);
-	attachDAO.dbClose();
+		String filefolderPath = downloadPath;
+		File filefolder = new File(filefolderPath);
+		filefolder.delete();
+		
+		attachDAO.dbClose();
 	
 	response.sendRedirect("draft.jsp");
 %>

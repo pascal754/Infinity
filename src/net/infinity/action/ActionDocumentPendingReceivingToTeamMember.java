@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.infinity.db.ApprovalDAO;
+import net.infinity.db.DocumentDAO;
 import net.infinity.db.DocumentVO;
 
 public class ActionDocumentPendingReceivingToTeamMember implements Action {
@@ -20,10 +20,9 @@ public class ActionDocumentPendingReceivingToTeamMember implements Action {
 
 		String id = (String)mySession.getAttribute("id");
 		
-		ApprovalDAO appDao = new ApprovalDAO(); 
-		List<DocumentVO> list = appDao.getDocumentPendingReceivingToTeamMember(Integer.parseInt(id));
-		appDao.dbClose();
-		
+		DocumentDAO docDao = new DocumentDAO(); 
+		List<DocumentVO> list = docDao.getDocumentPendingReceivingToTeamMember(Integer.parseInt(id));
+		docDao.dbClose();
 
 		request.setAttribute("docList",  list);
 		ActionForward af = new ActionForward();

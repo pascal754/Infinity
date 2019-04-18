@@ -1,5 +1,6 @@
 package net.infinity.action;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,11 +29,15 @@ public class ActionSaveDocument implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		
 		request.setCharacterEncoding("UTF-8");
+		String folderName=request.getParameter("foldername");
 		MultipartRequest multi = null;	
 		int filesize=5*1024*1024;
-		String uploadPath = request.getServletContext().getRealPath("/Upload");
+		String uploadPath = request.getServletContext().getRealPath("/Upload/"+folderName);
+		File Path= new File(uploadPath);
+		if(!Path.exists()) {
+			Path.mkdirs();
+		}
 		try{
 
 			multi=new MultipartRequest(request, uploadPath, filesize, "UTF-8"); 

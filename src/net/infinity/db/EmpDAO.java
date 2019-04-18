@@ -281,7 +281,7 @@ public class EmpDAO {
 			pstmt.setString(1, ppwd);
 			pstmt.setInt(2, empNo);
 			result = pstmt.executeUpdate();
-			System.out.println("reset");
+			System.out.println("change password");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

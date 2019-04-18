@@ -36,7 +36,7 @@ a { text-decoration:none; color:#000000;}
 			<th>이름</th>
 			<th>직급</th>
 			<th>패스워드 리셋</th>
-			<th> <input type='text' name='newpass'><input type='submit' value='초기화'></th>
+			<th> <input type='text' name='newpass'><input type='submit' value='변경'></th>
 			
 		<%
 			for (EmpVO x : empVoList) {
