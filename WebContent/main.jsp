@@ -103,7 +103,9 @@ header{
 			<%=name %>
 			&nbsp;
 			<%=title %>
-		
+			&nbsp;
+			<a href="passwordReset.jsp" target="content">비밀번호 변경</a>
+			
 			<%if (name.equals("momo")) {
 				response.sendRedirect("adminPage.jsp");
 			}%>

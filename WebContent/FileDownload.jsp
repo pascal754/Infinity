@@ -31,13 +31,16 @@
 	String downloadName = "";
 	if(request.getHeader("user-agent").contains("MSIE")|| request.getHeader("user-Agent").contains("Trident")){
 			downloadName =  URLEncoder.encode(fileName, "utf-8").replaceAll("\\+","%20");
-			response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
 			System.out.println(downloadName);
 	}else{
 		downloadName = new String(fileName.getBytes("utf-8"), "8859_1");
-		response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
 		System.out.println(downloadName);
 	}
+
+	response.setHeader("Content-Disposition", "attachment; filename=\""+ downloadName+"\"");
+	
+	out.clear();
+	out=pageContext.pushBody();
 	
 	// 요청 파일을 읽어서 클라이언트에 전송
 	FileInputStream in = new FileInputStream(file);
