@@ -12,7 +12,7 @@
 	<%EmpDAO empDao = new EmpDAO();
 	int id = Integer.parseInt((String)session.getAttribute("id"));
 	EmpVO empVO = empDao.getEmpVO(id);
-	empDao.dbClose();
+	
 	%>
 	<form action=PersonalpasswordReset.do method="post">
 	<table>
@@ -20,11 +20,12 @@
 			<th>아이디</th>
 			<th>이름</th>
 			<th>직급</th>
-			<th>패스워드 리셋</th>
+			<th>패스워드 변경</th>
 		<tr>
 			<td><%=empVO.getEmpNo()%></td>
 			<td><%=empVO.getName()%></td>
-			<td><%=empVO.getTitleCode()%></td>
+			<td><%=empDao.getTitle(empVO.getEmpNo())%></td>
+			<%empDao.dbClose(); %>
 			<td><input type='text' name='newpass'><input type='submit' value='변경'></td>
 
 		</tr>
