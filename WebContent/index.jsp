@@ -101,6 +101,7 @@
 						);
 				}
 			}
+			out.print("비밀번호: 1234");
 			empDao.dbClose();
 		%>
 	</details>
