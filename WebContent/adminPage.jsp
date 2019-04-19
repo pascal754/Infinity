@@ -42,7 +42,7 @@ a { text-decoration:none; color:#000000;}
 			for (EmpVO x : empVoList) {
 				out.println(
 			"<tr><td>" + x.getEmpNo() + "</td><td>" + x.getName()+"</td><td>"
-					+ x.getTitleCode() + "</td><td><input type='radio' name='empNo' value='"+x.getEmpNo()+"'> </td></tr>"
+					+ empDao.getTitle(x.getEmpNo()) + "</td><td><input type='radio' name='empNo' value='"+x.getEmpNo()+"'> </td></tr>"
 				);
 			}	
 		empDao.dbClose();
