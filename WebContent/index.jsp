@@ -26,8 +26,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-</head>
-<body>
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+<script src="jquery.details.js"></script>
 <%
 	session.invalidate();
 	
@@ -35,6 +36,7 @@
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 	List<EmpVO> list = new ArrayList<EmpVO>();
+	String help = "";
 
 	try {
 		Context init = new InitialContext();
@@ -54,6 +56,19 @@
 			empVo.setTel(rs.getInt("tel"));
 			list.add(empVo);
 		}
+		EmpDAO empDao = new EmpDAO();
+		for (EmpVO x : list) {
+			if (x.getTitleCode() != 4) {
+				
+				help +=
+					x.getEmpNo() + " "
+					+ x.getName() + " "
+					+ empDao.getTeamName(x.getEmpNo()) + " "
+					+ empDao.getTitle(x.getEmpNo()) + "<br>";
+			}
+		}
+		help += "비밀번호: 1234";
+		empDao.dbClose();
 	} catch (Exception e) {
 		
 	} finally {
@@ -62,6 +77,8 @@
 		if (conn != null) try { conn.close(); } catch(Exception e) { e.printStackTrace(); }
 	}
 %>
+</head>
+<body>
 	<h1>무한발전주식회사</h1>
 	<form action="loginProcess.do" method="post">
 		<fieldset>
@@ -86,24 +103,18 @@
 		</fieldset>
 	</form>
 	<a href="/">Galaxy MIT</a>
+	<br>
 	<details>
 		<summary>Help</summary>
-		<%
-			EmpDAO empDao = new EmpDAO();
-			for (EmpVO x : list) {
-				if (x.getTitleCode() != 4) {
-					
-					out.print(
-						+ x.getEmpNo() + " "
-						+ x.getName() + " "
-						+ empDao.getTeamName(x.getEmpNo()) + " "
-						+ empDao.getTitle(x.getEmpNo()) + "<br>"
-						);
-				}
-			}
-			out.print("비밀번호: 1234");
-			empDao.dbClose();
-		%>
+		<%=help %>
 	</details>
+	<script>
+		$(function() {
+			// Add conditional classname based on support
+			$('html').addClass($.fn.details.support ? 'details' : 'no-details');
+			// Emulate <details> where necessary and enable open/close event handlers
+			$('details').details();
+		});
+	</script>
 </body>
 </html>
