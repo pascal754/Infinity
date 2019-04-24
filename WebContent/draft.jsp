@@ -9,11 +9,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<%
+	String id = (String)session.getAttribute("id");
+	System.out.println(id);
+	if(id == null) {
+		System.out.println("trying redirect");
+		//out.println("<script>location.href='index.jsp';</script>");
+		
+		response.sendRedirect("info.html");
+		return;
+	}
+%>
 </head>
 <body>
 <%
 	DocumentDAO docDao = new DocumentDAO();
-	String id = (String)session.getAttribute("id");
+
 	List<DocumentVO> docVoList = docDao.getDraft(Integer.parseInt(id));
 	docDao.dbClose();
 %>

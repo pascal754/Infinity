@@ -11,6 +11,11 @@
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
 	
+	if(id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
+	
 	String docNo = (String)request.getAttribute("docNo");
 	List<EmpVO> teamMembers = (List<EmpVO>)request.getAttribute("teamMembers");
 %>

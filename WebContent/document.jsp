@@ -13,6 +13,12 @@
 <%
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
+	
+	if(id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
+	
 	String approvalLine = "";
 	approvalLine = request.getParameter("approvalLine");
 	

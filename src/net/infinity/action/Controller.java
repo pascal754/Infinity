@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -41,6 +42,15 @@ public class Controller extends HttpServlet {
     	
     	ActionForward af = null;
     	Action action = null;
+    	
+    	HttpSession mySession = request.getSession();
+
+		String id = (String)mySession.getAttribute("id");
+		
+		if (id == null && !command.equals("loginProcess.do")) {
+			response.sendRedirect("info.html");
+			return;
+		}
     	    	
     	if (command.equals("loginProcess.do")) {
     		af = new ActionForward();

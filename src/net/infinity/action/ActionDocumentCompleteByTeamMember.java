@@ -18,6 +18,7 @@ public class ActionDocumentCompleteByTeamMember implements Action {
 		HttpSession mySession = request.getSession();
 
 		String id = (String)mySession.getAttribute("id");
+		
 		DocumentDAO docDao = new DocumentDAO();
 		List<DocumentVO> list = docDao.getDocumentCompleteByTeamMember(Integer.parseInt(id));
 		docDao.dbClose();

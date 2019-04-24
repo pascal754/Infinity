@@ -14,6 +14,11 @@
 <%
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
+
+	if(id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
 	
 	//DocumentDAO docDao = new DocumentDAO();
 	//List<DocumentVO> list = docDao.getPendingSendingToTeamLeader(Integer.parseInt(id));

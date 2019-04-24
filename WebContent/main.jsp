@@ -83,6 +83,12 @@ header{
 		<%
 			String name = (String)session.getAttribute("name");
 			String id = (String)session.getAttribute("id");
+			
+			if(id == null) {
+				response.sendRedirect("info.html");
+				return;
+			}
+			
 			int title_code = (int)session.getAttribute("title_code");
 			EmpDAO empDao = new EmpDAO();
 			String teamName = empDao.getTeamName(Integer.parseInt(id));

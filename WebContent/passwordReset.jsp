@@ -7,11 +7,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<%
+	String id = (String)session.getAttribute("id");
+	if(id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
+%>
 </head>
 <body>
 	<%EmpDAO empDao = new EmpDAO();
-	int id = Integer.parseInt((String)session.getAttribute("id"));
-	EmpVO empVO = empDao.getEmpVO(id);
+	int emp_no = Integer.parseInt((String)session.getAttribute("id"));
+	EmpVO empVO = empDao.getEmpVO(emp_no);
 	
 	%>
 	<form action=PersonalpasswordReset.do method="post">

@@ -12,6 +12,13 @@
 <style>
 a { text-decoration:none; color:#000000;}
 </style>
+<%
+	String id = (String)session.getAttribute("id");
+	if (id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
+%>
 </head>
 	
 	

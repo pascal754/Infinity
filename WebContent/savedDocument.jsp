@@ -15,6 +15,10 @@
 	String name = (String)session.getAttribute("name");
 	String id = (String)session.getAttribute("id");
 	
+	if(id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
 	
 	DocumentVO docVo = (DocumentVO)request.getAttribute("docVo");
 	String[] teams = (String [])request.getAttribute("teams");

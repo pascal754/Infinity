@@ -12,6 +12,12 @@
 <body>
 
 <%	
+	String id = (String)session.getAttribute("id");
+	if(id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
+	
 	String fileName = request.getParameter("fileName");
 	String folderName = request.getParameter("docNo");
 	System.out.println(fileName);

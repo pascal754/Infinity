@@ -8,11 +8,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<%
+	String id = (String)session.getAttribute("id");
+	if(id == null) {
+		response.sendRedirect("info.html");
+		return;
+	}
+%>
 </head>
 <body>
 <%
 	DocumentDAO docDao = new DocumentDAO();
-	String id = (String)session.getAttribute("id");
+	
+	
 	List<DocumentVO> docVoList = docDao.getDocumentBeingSent(Integer.parseInt(id));
 	docDao.dbClose();
 %>
