@@ -85,7 +85,7 @@ header{
 			String id = (String)session.getAttribute("id");
 			
 			if(id == null) {
-				response.sendRedirect("info.html");
+				response.sendRedirect("info_main.html");
 				return;
 			}
 			

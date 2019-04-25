@@ -43,16 +43,16 @@ a { text-decoration:none; color:#000000;}
 			<th>이름</th>
 			<th>직급</th>
 			<th>패스워드 리셋</th>
-			<th> <input type='text' name='newpass'><input type='submit' value='변경'></th>
+			<th> <input type='text' name='newpass' required><input type='submit' value='변경'></th>
 			
 		<%
 			for (EmpVO x : empVoList) {
 				out.println(
-			"<tr><td>" + x.getEmpNo() + "</td><td>" + x.getName()+"</td><td>"
+					"<tr><td>" + x.getEmpNo() + "</td><td>" + x.getName()+"</td><td>"
 					+ empDao.getTitle(x.getEmpNo()) + "</td><td><input type='radio' name='empNo' value='"+x.getEmpNo()+"'> </td></tr>"
 				);
 			}	
-		empDao.dbClose();
+			empDao.dbClose();
 		%>
 		
 		

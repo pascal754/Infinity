@@ -22,6 +22,7 @@
 	
 	%>
 	<form action=PersonalpasswordReset.do method="post">
+	<p>관리 정책에 따라 패스워드는 1234로 다시 초기화 됩니다.</p>
 	<table>
 		<tr>
 			<th>아이디</th>
@@ -34,7 +35,9 @@
 			<td><%=empDao.getTitle(empVO.getEmpNo())%></td>
 			<%empDao.dbClose(); %>
 			<td><input type='text' name='newpass'><input type='submit' value='변경'></td>
+			
 
 		</tr>
+	</table>
 </body>
 </html>

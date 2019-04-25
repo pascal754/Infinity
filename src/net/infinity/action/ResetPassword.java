@@ -16,17 +16,26 @@ public class ResetPassword implements Action{
 	//	HttpSession mySession = request.getSession();
 	//	String id = (String)mySession.getAttribute("id");
 		
-		EmpDAO empDao = new EmpDAO();
-	
-		int empNo = Integer.parseInt(request.getParameter("empNo"));
-		String newpass = request.getParameter("newpass");
-		
-		empDao.resetPassword(empNo,newpass);
-		empDao.dbClose();
-		
 		ActionForward af = new ActionForward();
 		af.setPath("adminPage.jsp");
 		af.setRedirect(false);
+				
+		
+	
+		String emp_no = request.getParameter("empNo");
+		if (emp_no == null)
+			return af;
+		
+		int empNo = Integer.parseInt(emp_no);
+		String newpass = request.getParameter("newpass");
+		
+		System.out.println("empNo: " + empNo);
+		System.out.println("newpass: " + newpass);
+
+		EmpDAO empDao = new EmpDAO();
+		empDao.resetPassword(empNo,newpass);
+		empDao.dbClose();
+		
 		
 		return af;
 	}

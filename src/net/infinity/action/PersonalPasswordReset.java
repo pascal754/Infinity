@@ -22,7 +22,7 @@ public class PersonalPasswordReset implements Action{
 		int empNo = Integer.parseInt(id);
 		String newpass = request.getParameter("newpass");
 		
-		empDao.resetPassword(empNo,newpass);
+		empDao.resetPassword(empNo, "1234");
 		empDao.dbClose();
 		
 		ActionForward af = new ActionForward();
